@@ -1,0 +1,810 @@
+<!doctype html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+		/>
+		<title>Une question pour toi</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Caveat:wght@500;600;700&family=Poppins:wght@300;400;500&display=swap"
+			rel="stylesheet"
+		/>
+		<style>
+			:root {
+				--purple-bg: #3a2e4d;
+				--purple-bg-deep: #251d33;
+				--mocha: #8f8078;
+				--chocolate: #332417;
+				--olive: #e8dcc9;
+				--forest: #2c4423;
+				--cream: #e8dcc9;
+				--beige: #d9c9a8;
+				--dusty-blue: #9bb2bd;
+			}
+
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+				-webkit-tap-highlight-color: transparent;
+			}
+
+			html,
+			body {
+				overflow-y: scroll;
+			}
+
+			body {
+				font-family: "Poppins", sans-serif;
+				background: linear-gradient(160deg, var(--forest), #1a2a15);
+				color: var(--cream);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				position: relative;
+				min-height: 100vh;
+				min-height: 100dvh;
+			}
+
+			.stage {
+				position: relative;
+				z-index: 2;
+				width: 100%;
+				max-width: 480px;
+				padding: 32px 24px;
+				text-align: center;
+			}
+
+			.scene {
+				display: none;
+			}
+
+			.scene.active {
+				display: block;
+			}
+
+			.heart-mark {
+				font-size: 38px;
+				color: var(--dusty-blue);
+				margin-bottom: 18px;
+				display: inline-block;
+			}
+
+			h1 {
+				font-family: "Cormorant Garamond", serif;
+				font-weight: 600;
+				font-size: clamp(30px, 8vw, 44px);
+				line-height: 1.25;
+				color: var(--cream);
+				margin-bottom: 8px;
+			}
+
+			.subtitle {
+				font-size: 14px;
+				font-weight: 300;
+				color: var(--dusty-blue);
+				letter-spacing: 0.03em;
+				margin-bottom: 36px;
+			}
+
+			.buttons {
+				display: flex;
+				gap: 16px;
+				justify-content: center;
+				align-items: center;
+				flex-wrap: wrap;
+				position: relative;
+				min-height: 70px;
+			}
+
+			button {
+				font-family: "Poppins", sans-serif;
+				font-size: 16px;
+				font-weight: 500;
+				padding: 15px 34px;
+				border-radius: 14px;
+				border: none;
+				cursor: pointer;
+			}
+
+			.btn-yes {
+				background: var(--olive);
+				color: var(--chocolate);
+			}
+
+			.btn-no {
+				background: transparent;
+				color: var(--cream);
+				border: 1.5px solid var(--mocha);
+				position: relative;
+				transition:
+					transform 0.18s ease,
+					left 0.18s ease,
+					top 0.18s ease;
+			}
+
+			.btn-no.escaping {
+				position: fixed;
+			}
+
+			.no-wrap {
+				position: relative;
+				height: 54px;
+				width: 140px;
+			}
+
+			.hint {
+				margin-top: 28px;
+				font-size: 12.5px;
+				color: var(--dusty-blue);
+				opacity: 0.8;
+				font-weight: 300;
+				min-height: 16px;
+			}
+
+			.final-heart {
+				font-size: 56px;
+				margin-bottom: 6px;
+				color: var(--dusty-blue);
+			}
+
+			.signature {
+				font-family: "Caveat", cursive;
+				font-weight: 600;
+				color: var(--cream);
+				font-size: clamp(22px, 6vw, 28px);
+				margin-top: 10px;
+				line-height: 1.5;
+			}
+
+			.final-note {
+				font-family: "Cormorant Garamond", serif;
+				font-style: italic;
+				font-size: clamp(17px, 4.6vw, 20px);
+				color: var(--cream);
+				line-height: 1.7;
+				margin-top: 14px;
+				padding: 0 6px;
+			}
+
+			@media (max-width: 380px) {
+				.buttons {
+					gap: 12px;
+				}
+				button {
+					padding: 14px 26px;
+					font-size: 15px;
+				}
+			}
+
+			.continue-btn {
+				margin-top: 30px;
+				background: transparent;
+				color: var(--cream);
+				border: 1.5px solid var(--olive);
+				padding: 12px 28px;
+				font-size: 14px;
+			}
+
+			.eyebrow {
+				font-size: 12px;
+				letter-spacing: 0.12em;
+				text-transform: uppercase;
+				color: var(--olive);
+				font-weight: 500;
+				margin-bottom: 6px;
+			}
+
+			#scene4 h1 {
+				margin-bottom: 30px;
+			}
+
+			.carousel {
+				position: relative;
+			}
+
+			.carousel-track {
+				display: flex;
+				overflow-x: auto;
+				scroll-snap-type: x mandatory;
+				gap: 16px;
+				padding: 4px 4px 10px 4px;
+				-webkit-overflow-scrolling: touch;
+				scrollbar-width: none;
+			}
+
+			.carousel-track::-webkit-scrollbar {
+				display: none;
+			}
+
+			.memory-card {
+				flex: 0 0 100%;
+				scroll-snap-align: center;
+				background: var(--beige);
+				border-radius: 14px;
+				overflow: hidden;
+				text-align: left;
+			}
+
+			.memory-photo {
+				width: 100%;
+				aspect-ratio: 4/5;
+				background: var(--mocha);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				color: var(--chocolate);
+				font-size: 13px;
+				font-weight: 300;
+				overflow: hidden;
+			}
+
+			.screenshot-block {
+				margin-bottom: 22px;
+			}
+
+			.screenshot-frame {
+				width: 100%;
+				border-radius: 14px;
+				overflow: hidden;
+				background: var(--mocha);
+			}
+
+			.screenshot-frame img {
+				width: 100%;
+				display: block;
+			}
+
+			.screenshot-caption {
+				font-family: "Cormorant Garamond", serif;
+				font-style: italic;
+				font-size: 14px;
+				color: var(--dusty-blue);
+				margin-top: 10px;
+			}
+
+			.memory-photo img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				display: block;
+			}
+
+			.memory-caption {
+				padding: 16px 18px 20px 18px;
+			}
+
+			.memory-caption .date {
+				font-size: 11px;
+				color: var(--forest);
+				letter-spacing: 0.06em;
+				text-transform: uppercase;
+				margin-bottom: 5px;
+				font-weight: 500;
+			}
+
+			.memory-caption p {
+				font-family: "Cormorant Garamond", serif;
+				font-style: italic;
+				font-size: 17px;
+				color: var(--chocolate);
+				line-height: 1.5;
+			}
+
+			.dots {
+				display: flex;
+				justify-content: center;
+				gap: 8px;
+				margin-top: 16px;
+			}
+
+			.dot {
+				width: 7px;
+				height: 7px;
+				border-radius: 50%;
+				background: var(--mocha);
+				opacity: 0.5;
+			}
+
+			.dot.on {
+				opacity: 1;
+				background: var(--dusty-blue);
+			}
+
+			.swipe-hint {
+				margin-top: 14px;
+				font-size: 12px;
+				color: var(--dusty-blue);
+				opacity: 0.7;
+				font-weight: 300;
+			}
+
+			#scene5 .final-heart {
+				font-size: 44px;
+			}
+
+			.my-letter {
+				font-family: "Cormorant Garamond", serif;
+				font-size: clamp(17px, 4.6vw, 20px);
+				color: var(--chocolate);
+				line-height: 1.5;
+				text-align: left;
+				padding: 10px 22px;
+				background: var(--beige);
+				border-radius: 14px;
+				height: 500px;
+				overflow-y: scroll;
+			}
+
+			.secret-btn {
+				margin-top: 25px;
+				margin-bottom: 30px;
+				background: transparent;
+				border: 1.5px solid var(--olive);
+				color: var(--cream);
+				font-size: 14px;
+				font-weight: 500;
+				padding: 13px 26px;
+				border-radius: 14px;
+				display: inline-flex;
+				align-items: center;
+				gap: 8px;
+				cursor: pointer;
+			}
+
+			.pin-overlay {
+				position: fixed;
+				inset: 0;
+				background: rgba(20, 26, 15, 0.85);
+				display: none;
+				align-items: center;
+				justify-content: center;
+				z-index: 10;
+				padding: 24px;
+			}
+
+			.pin-overlay.open {
+				display: flex;
+			}
+
+			.pin-box {
+				background: var(--beige);
+				border-radius: 16px;
+				padding: 32px 26px;
+				width: 100%;
+				max-width: 320px;
+				text-align: center;
+			}
+
+			.pin-box h2 {
+				font-family: "Cormorant Garamond", serif;
+				font-size: 22px;
+				color: var(--chocolate);
+				margin-bottom: 8px;
+			}
+
+			.pin-hint {
+				font-size: 13px;
+				color: var(--forest);
+				font-style: italic;
+				margin-bottom: 20px;
+			}
+
+			.pin-inputs {
+				display: flex;
+				gap: 10px;
+				justify-content: center;
+				margin-bottom: 16px;
+			}
+
+			.pin-inputs input {
+				width: 44px;
+				height: 52px;
+				text-align: center;
+				font-size: 22px;
+				border: 1.5px solid var(--mocha);
+				border-radius: 10px;
+				background: #fff;
+				color: var(--chocolate);
+				font-family: "Poppins", sans-serif;
+			}
+
+			.pin-inputs input:focus {
+				outline: none;
+				border-color: var(--forest);
+			}
+
+			.pin-error {
+				font-size: 12.5px;
+				color: #a13d3d;
+				min-height: 16px;
+				margin-bottom: 10px;
+			}
+
+			.pin-actions {
+				display: flex;
+				gap: 10px;
+				justify-content: center;
+			}
+
+			.pin-confirm {
+				background: var(--forest);
+				color: var(--cream);
+				border: none;
+				padding: 11px 24px;
+				border-radius: 10px;
+				font-size: 14px;
+				cursor: pointer;
+			}
+
+			.pin-cancel {
+				background: transparent;
+				color: var(--chocolate);
+				border: 1.5px solid var(--mocha);
+				padding: 11px 20px;
+				border-radius: 10px;
+				font-size: 14px;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="pin-overlay" id="pinOverlay">
+			<div class="pin-box">
+				<h2>Code secret</h2>
+				<p class="pin-hint">Indice : le jour de notre premier baiser</p>
+				<div class="pin-inputs">
+					<input type="tel" maxlength="1" inputmode="numeric" id="pin0" />
+					<input type="tel" maxlength="1" inputmode="numeric" id="pin1" />
+					<input type="tel" maxlength="1" inputmode="numeric" id="pin2" />
+					<input type="tel" maxlength="1" inputmode="numeric" id="pin3" />
+				</div>
+				<p class="pin-error" id="pinError"></p>
+				<div class="pin-actions">
+					<button class="pin-cancel" onclick="closePin()">Annuler</button>
+					<button class="pin-confirm" onclick="checkPin()">Valider</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="stage">
+			<section class="scene active" id="scene1">
+				<div class="heart-mark">♥</div>
+				<h1>Tu m'aimes ?</h1>
+				<p class="subtitle">Réponds sincèrement...</p>
+				<div class="buttons">
+					<button class="btn-yes" onclick="goTo('scene2')">Oui</button>
+					<div class="no-wrap">
+						<button class="btn-no" id="noBtn1">Non</button>
+					</div>
+				</div>
+				<p class="hint" id="hint1"></p>
+			</section>
+
+			<section class="scene" id="scene2">
+				<div class="heart-mark">♥</div>
+				<h1>Tu es sûre ?</h1>
+				<p class="subtitle">Vraiment, vraiment sûre ?</p>
+				<div class="buttons">
+					<button class="btn-yes" onclick="goTo('scene3')">
+						Oui, certaine
+					</button>
+					<div class="no-wrap">
+						<button class="btn-no" id="noBtn2">Non...</button>
+					</div>
+				</div>
+				<p class="hint" id="hint2"></p>
+			</section>
+
+			<section class="scene" id="scene3">
+				<div class="final-heart">♥</div>
+				<h1>Moi aussi je t'aime.</h1>
+				<p class="final-note">
+					Chaque « oui » que tu viens de me dire, je le garde précieusement dans
+					mon cœur. Tes mots, ceux que tu as écrits dans ton dernier long
+					message, me sont précieux. Ils m’ont réchauffé le cœur et profondément
+					touché. Je veux que tu te souviennes toujours de cela.
+				</p>
+				<p class="signature">— avec tout mon cœur, ton Rakhat</p>
+				<button class="continue-btn" onclick="goTo('scene4')">
+					Encore une chose →
+				</button>
+			</section>
+
+			<section class="scene" id="scene4">
+				<p class="eyebrow">Nos souvenirs</p>
+				<h1>Quelques instants à nous</h1>
+
+				<div class="carousel">
+					<div class="carousel-track" id="carouselTrack">
+						<div class="memory-card">
+							<div class="memory-photo">
+								<img
+									src="./1.jpg"
+									alt="Souvenir 1"
+									onerror="this.parentElement.innerHTML = 'Photo 1 ici'"
+								/>
+							</div>
+							<div class="memory-caption">
+								<div class="date">Un bisou</div>
+								<p>
+									Notre amour est solide comme les fondations des tours Petronas
+								</p>
+							</div>
+						</div>
+
+						<div class="memory-card">
+							<div class="memory-photo">
+								<img
+									src="./2.jpg"
+									alt="Souvenir 2"
+									onerror="this.parentElement.innerHTML = 'Photo 2 ici'"
+								/>
+							</div>
+							<div class="memory-caption">
+								<div class="date">Soirée</div>
+								<p>Des promenades chaleureuses jusqu’à tard dans la nuit</p>
+							</div>
+						</div>
+
+						<div class="memory-card">
+							<div class="memory-photo">
+								<img
+									src="./3.jpg"
+									alt="Souvenir 3"
+									onerror="this.parentElement.innerHTML = 'Photo 3 ici'"
+								/>
+							</div>
+							<div class="memory-caption">
+								<div class="date">Heureux Kazakh</div>
+								<p>– Heureuse Française</p>
+							</div>
+						</div>
+
+						<div class="memory-card">
+							<div class="memory-photo">
+								<img
+									src="./5.jpg"
+									alt="Souvenir 4"
+									onerror="this.parentElement.innerHTML = 'Photo 4 ici'"
+								/>
+							</div>
+							<div class="memory-caption">
+								<div class="date">Un couple international heureux</div>
+								<p>Un garçon d’Asie, une fille d’Europe</p>
+							</div>
+						</div>
+					</div>
+
+					<div class="dots" id="dots"></div>
+					<p class="swipe-hint">← glisse pour voir la suite →</p>
+				</div>
+
+				<button class="continue-btn" onclick="goTo('scene5')">
+					Une dernière chose →
+				</button>
+			</section>
+
+			<section class="scene" id="scene5">
+				<div class="final-heart">♥</div>
+				<p class="eyebrow">Pour toi</p>
+
+				<div class="screenshot-block">
+					<div class="screenshot-frame">
+						<img
+							src="./Screenshot 2026-08-29 at 22.13.20.png"
+							alt="Souvenir"
+							onerror="this.parentElement.innerHTML = 'Capture d\'écran ici'"
+						/>
+					</div>
+					<p class="screenshot-caption">
+						Ce sont ces mots sincères qui ont fait fondre ma douleur.
+					</p>
+				</div>
+
+				<div class="my-letter">
+					J’aime beaucoup les mots que tu as écrits dans ton dernier long
+					message. J’y vois de la sincérité, une sincérité véritable, et non pas
+					de simples paroles vides. Je suis certain que toi aussi, tu as
+					peut-être déjà ressenti cette peur que je puisse, en secret, flirter
+					avec une autre fille. Et j’aimerais graver une chose dans ton esprit,
+					une fois pour toutes. Premièrement, je ne veux pas être un salaud qui,
+					par faiblesse ou par simple envie, se laisse guider par ses pulsions.
+					Deuxièmement, j’ai demandé à tous mes amis de se détourner de moi si
+					jamais je commençais ne serait-ce qu’un peu à flirter avec une autre
+					fille. Et ma réputation compte énormément pour moi. Pour un homme
+					kazakh, tromper sa partenaire est une véritable honte, parce que dans
+					notre culture, la fidélité est profondément respectée. Dans le cas
+					contraire, un homme qui trompe devient presque infréquentable, voire
+					un paria. J’ai vu de mes propres yeux les larmes d’un ami après avoir
+					été trompé. C’est extrêmement douloureux, et je ne veux jamais que tu
+					ressentes ce genre d’émotions à cause de moi. Je suis guidé par la
+					raison et par mes valeurs, pas par mes pulsions. Alors je veux que tu
+					arrêtes de te faire du mal en pensant à cette possibilité. Je te suis
+					fidèle comme le cheval l’est au guerrier des steppes. Je te le
+					promets. D’ailleurs, pendant mon séjour à Astana, je ressentais
+					exactement les mêmes émotions que toi pendant l’Espagne, mais je
+					n’arrivais pas vraiment à te les expliquer. Maintenant que tu as
+					toi-même vécu cette situation, je comprends parfaitement ce que tu
+					voulais dire concernant le cadeau. Alors ne t’inquiète pas pour ça. Ça
+					m’a profondément touché de lire que je t’inspire. Ces mots ont
+					énormément de valeur pour moi. Le fait que tu aies vu tout cela en moi
+					me rend heureux. Je veux entendre ce genre de mots d’une seule fille :
+					de toi, et de personne d’autre. Et cela me suffira. J’aime voir les
+					résultats de tous les efforts que j’ai faits ces dernières années,
+					mais je sais aussi qu’il me reste encore beaucoup à accomplir et que
+					j’ai encore beaucoup à apprendre et à améliorer en moi. Honnêtement,
+					j’ai toujours rêvé d’une fille intelligente, fidèle, saine, bien
+					élevée et avec de belles valeurs. Je pense que j’ai fait le bon choix
+					et que je ne me suis pas trompé. Je t’aime, Iru. ❤️
+				</div>
+				<p class="signature">— Rakhat</p>
+				<button class="secret-btn" onclick="openPin()">
+					🔒 Surprise secrète
+				</button>
+			</section>
+		</div>
+
+		<script>
+			const dodgeMessages = [
+				"Essaie encore...",
+				"Non n'est pas une option ici 😊",
+				"Le bouton fuit, comme tes doutes",
+				"Tu ne peux pas m'échapper",
+				"Allez, sois honnête...",
+			];
+
+			function goTo(id) {
+				document
+					.querySelectorAll(".scene")
+					.forEach((s) => s.classList.remove("active"));
+				document.getElementById(id).classList.add("active");
+			}
+
+			function setupDodge(btn, hintEl) {
+				let hintIndex = 0;
+				let isEscaping = false;
+
+				function moveButton(clientX, clientY) {
+					const btnRect = btn.getBoundingClientRect();
+					const margin = 20;
+					const maxX = window.innerWidth - btnRect.width - margin;
+					const maxY = window.innerHeight - btnRect.height - margin;
+
+					let newX = Math.random() * (maxX - margin) + margin;
+					let newY = Math.random() * (maxY - margin) + margin;
+
+					if (clientX !== undefined) {
+						const dx = Math.abs(newX - clientX);
+						const dy = Math.abs(newY - clientY);
+						if (dx < 100 && dy < 100) {
+							newX = (newX + 180) % maxX;
+						}
+					}
+
+					if (!isEscaping) {
+						isEscaping = true;
+						btn.classList.add("escaping");
+					}
+
+					btn.style.left = newX + "px";
+					btn.style.top = newY + "px";
+
+					if (hintEl) {
+						hintEl.textContent =
+							dodgeMessages[hintIndex % dodgeMessages.length];
+						hintIndex++;
+					}
+				}
+
+				btn.addEventListener("mouseenter", (e) => {
+					moveButton(e.clientX, e.clientY);
+				});
+
+				btn.addEventListener(
+					"touchstart",
+					(e) => {
+						e.preventDefault();
+						const touch = e.touches[0];
+						moveButton(touch.clientX, touch.clientY);
+					},
+					{ passive: false },
+				);
+
+				btn.addEventListener("click", (e) => {
+					e.preventDefault();
+					moveButton(e.clientX, e.clientY);
+				});
+			}
+
+			setupDodge(
+				document.getElementById("noBtn1"),
+				document.getElementById("hint1"),
+			);
+			setupDodge(
+				document.getElementById("noBtn2"),
+				document.getElementById("hint2"),
+			);
+
+			function setupCarousel() {
+				const track = document.getElementById("carouselTrack");
+				const dotsWrap = document.getElementById("dots");
+				const cards = track.querySelectorAll(".memory-card");
+
+				cards.forEach((_, i) => {
+					const d = document.createElement("div");
+					d.className = "dot" + (i === 0 ? " on" : "");
+					dotsWrap.appendChild(d);
+				});
+
+				const dots = dotsWrap.querySelectorAll(".dot");
+
+				track.addEventListener("scroll", () => {
+					const index = Math.round(track.scrollLeft / track.clientWidth);
+					dots.forEach((d, i) => d.classList.toggle("on", i === index));
+				});
+			}
+			setupCarousel();
+
+			const SECRET_PIN = "1003";
+			const SECRET_URL = "https://youtu.be/U-C3hIgkHzw?si=Nlg_FJCsT04lsmef";
+
+			const pinInputs = [
+				document.getElementById("pin0"),
+				document.getElementById("pin1"),
+				document.getElementById("pin2"),
+				document.getElementById("pin3"),
+			];
+			const pinOverlay = document.getElementById("pinOverlay");
+			const pinError = document.getElementById("pinError");
+
+			function openPin() {
+				pinOverlay.classList.add("open");
+				pinInputs.forEach((i) => (i.value = ""));
+				pinError.textContent = "";
+				pinInputs[0].focus();
+			}
+
+			function closePin() {
+				pinOverlay.classList.remove("open");
+			}
+
+			pinInputs.forEach((input, idx) => {
+				input.addEventListener("input", () => {
+					input.value = input.value.replace(/[^0-9]/g, "");
+					if (input.value && idx < pinInputs.length - 1) {
+						pinInputs[idx + 1].focus();
+					}
+				});
+				input.addEventListener("keydown", (e) => {
+					if (e.key === "Backspace" && !input.value && idx > 0) {
+						pinInputs[idx - 1].focus();
+					}
+					if (e.key === "Enter") {
+						checkPin();
+					}
+				});
+			});
+
+			function checkPin() {
+				const entered = pinInputs.map((i) => i.value).join("");
+				if (entered.length < 4) {
+					pinError.textContent = "Entre les 4 chiffres.";
+					return;
+				}
+				if (entered === SECRET_PIN) {
+					window.open(SECRET_URL, "_blank");
+					closePin();
+				} else {
+					pinError.textContent = "Ce n'est pas le bon code...";
+					pinInputs.forEach((i) => (i.value = ""));
+					pinInputs[0].focus();
+				}
+			}
+		</script>
+	</body>
+</html>
