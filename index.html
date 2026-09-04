@@ -90,7 +90,254 @@
             <div class="content__block hidden" id="diplomBlock">
                 <div class="content__title">Our Timeline</div>
 
+<!-- =========================================================
+     OUR STORY, DATED — elegant timeline
+     Dark plum background, gold accents, cursive title.
+     Paste this whole block into your page.
+     To add a new date, duplicate one .entry block below.
+     ========================================================= -->
 
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;1,500&family=Dancing+Script:wght@600&display=swap');
+
+  .story-section {
+    background: #2E1F3D;
+    padding: 100px 20px 120px;
+    font-family: "Playfair Display", Georgia, serif;
+  }
+
+  .story-inner {
+    max-width: 620px;
+    margin: 0 auto;
+  }
+
+  .story-title {
+    font-family: "Dancing Script", cursive;
+    font-weight: 600;
+    font-size: 56px;
+    color: #E8D4A0;
+    text-align: center;
+    margin: 0 0 8px;
+  }
+
+  .story-subtitle {
+    font-style: italic;
+    font-size: 16px;
+    color: #B8A6D9;
+    text-align: center;
+    margin: 0 0 56px;
+  }
+
+  /* ---------- Together-since counter ---------- */
+  .counter-card {
+    text-align: center;
+    margin: 0 0 64px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid rgba(232, 212, 160, 0.2);
+  }
+
+  .counter-label {
+    font-style: italic;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: #B8A6D9;
+    margin: 0 0 20px;
+  }
+
+  .counter-row {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .counter-unit {
+    min-width: 70px;
+  }
+
+  .counter-number {
+    font-size: 34px;
+    color: #E8D4A0;
+    line-height: 1;
+    margin: 0 0 6px;
+  }
+
+  .counter-unit-label {
+    font-style: italic;
+    font-size: 12px;
+    color: #9C8CAE;
+    letter-spacing: 0.5px;
+  }
+
+  /* ---------- Timeline ---------- */
+  .timeline {
+    position: relative;
+    padding-left: 36px;
+  }
+
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 6px;
+    bottom: 6px;
+    width: 1px;
+    background: rgba(232, 212, 160, 0.35);
+  }
+
+  .entry {
+    position: relative;
+    margin-bottom: 52px;
+  }
+
+  .entry:last-child {
+    margin-bottom: 0;
+  }
+
+  .entry::before {
+    content: "";
+    position: absolute;
+    left: -36px;
+    top: 6px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #E8D4A0;
+    box-shadow: 0 0 6px rgba(232, 212, 160, 0.6);
+  }
+
+  .entry-date {
+    font-style: italic;
+    font-size: 15px;
+    color: #D9BE7E;
+    margin: 0 0 6px;
+  }
+
+  .entry-text {
+    font-size: 22px;
+    color: #F0E9D8;
+    margin: 0;
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 640px) {
+    .story-section { padding: 64px 18px 80px; }
+    .story-title { font-size: 38px; }
+    .story-subtitle { font-size: 14px; margin-bottom: 40px; }
+
+    .counter-card { margin-bottom: 44px; padding-bottom: 32px; }
+    .counter-row { gap: 18px; }
+    .counter-unit { min-width: 56px; }
+    .counter-number { font-size: 24px; }
+    .counter-unit-label { font-size: 10px; }
+
+    .timeline { padding-left: 26px; }
+    .timeline::before { left: 4px; }
+    .entry { margin-bottom: 36px; }
+    .entry::before { left: -26px; width: 8px; height: 8px; }
+    .entry-date { font-size: 13px; }
+    .entry-text { font-size: 18px; }
+  }
+
+  @media (max-width: 380px) {
+    .counter-row { gap: 12px; }
+    .counter-unit { min-width: 48px; }
+    .counter-number { font-size: 20px; }
+  }
+</style>
+
+<section class="story-section">
+  <div class="story-inner">
+
+    <h1 class="story-title">our story, dated</h1>
+    <p class="story-subtitle">moments that changed everything</p>
+
+    <!-- Live counter since March 7, 2026 -->
+    <div class="counter-card">
+      <p class="counter-label">together since March 7, 2026</p>
+      <div class="counter-row">
+        <div class="counter-unit">
+          <div class="counter-number" id="c-days">0</div>
+          <div class="counter-unit-label">days</div>
+        </div>
+        <div class="counter-unit">
+          <div class="counter-number" id="c-hours">0</div>
+          <div class="counter-unit-label">hours</div>
+        </div>
+        <div class="counter-unit">
+          <div class="counter-number" id="c-mins">0</div>
+          <div class="counter-unit-label">minutes</div>
+        </div>
+        <div class="counter-unit">
+          <div class="counter-number" id="c-secs">0</div>
+          <div class="counter-unit-label">seconds</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline">
+
+      <!-- ===== COPY THIS BLOCK FOR EACH NEW DATE ===== -->
+      <div class="entry">
+        <p class="entry-date">January 26, 2026</p>
+        <p class="entry-text">The day we met.</p>
+      </div>
+      <!-- ============================================= -->
+
+      <div class="entry">
+        <p class="entry-date">February 4, 2026</p>
+        <p class="entry-text">The day we first spoke.</p>
+      </div>
+
+      <div class="entry">
+        <p class="entry-date">February 11, 2026</p>
+        <p class="entry-text">The day I made the first move.</p>
+      </div>
+
+      <div class="entry">
+        <p class="entry-date">March 7, 2026</p>
+        <p class="entry-text">The day our relationship began.</p>
+      </div>
+
+      <div class="entry">
+        <p class="entry-date">March 10, 2026</p>
+        <p class="entry-text">Our first kiss.</p>
+      </div>
+
+      <div class="entry">
+        <p class="entry-date">Today and</p>
+        <p class="entry-text">Forever&hellip;</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var start = new Date("2026-03-07T00:00:00");
+
+    function update() {
+      var now = new Date();
+      var diff = now - start;
+      if (diff < 0) diff = 0;
+
+      var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      var mins = Math.floor((diff / (1000 * 60)) % 60);
+      var secs = Math.floor((diff / 1000) % 60);
+
+      document.getElementById("c-days").textContent = days;
+      document.getElementById("c-hours").textContent = hours;
+      document.getElementById("c-mins").textContent = mins;
+      document.getElementById("c-secs").textContent = secs;
+    }
+
+    update();
+    setInterval(update, 1000);
+  })();
+</script>
+                
 
             </div>
         </div>
