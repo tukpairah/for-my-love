@@ -1,0 +1,1137 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+		/>
+		<title>for you</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Marck+Script&family=Manrope:wght@300;400;500&display=swap"
+			rel="stylesheet"
+		/>
+		<style>
+			:root {
+				--plum-deep: #2a1633;
+				--plum-mid: #3d2148;
+				--plum-soft: #5a3369;
+				--violet: #8a5cb0;
+				--rose: #e8a6c1;
+				--peach: #f3c8a8;
+				--gold: #e6c48c;
+				--cream: #f7ecdf;
+				--ink: #efe3ec;
+			}
+
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+			html {
+				scroll-behavior: smooth;
+			}
+
+			body {
+				background: radial-gradient(
+					ellipse at 20% 10%,
+					var(--plum-mid),
+					var(--plum-deep) 60%
+				);
+				color: var(--ink);
+				font-family: "Manrope", sans-serif;
+				overflow-x: hidden;
+				min-height: 100vh;
+				-webkit-text-size-adjust: 100%;
+			}
+
+			img {
+				max-width: 100%;
+			}
+
+			/* ---------- ambient particles ---------- */
+			.bg-particles {
+				position: fixed;
+				inset: 0;
+				z-index: 0;
+				pointer-events: none;
+				overflow: hidden;
+			}
+			.bg-particles span {
+				position: absolute;
+				bottom: -10%;
+				display: block;
+				border-radius: 50%;
+				background: radial-gradient(circle, var(--gold), transparent 70%);
+				opacity: 0.55;
+				animation: float-up linear infinite;
+			}
+			@keyframes float-up {
+				0% {
+					transform: translateY(0) translateX(0);
+					opacity: 0;
+				}
+				10% {
+					opacity: 0.6;
+				}
+				90% {
+					opacity: 0.4;
+				}
+				100% {
+					transform: translateY(-110vh) translateX(20px);
+					opacity: 0;
+				}
+			}
+
+			section {
+				position: relative;
+				z-index: 1;
+				min-height: 100vh;
+				min-height: 100dvh;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				flex-direction: column;
+				padding: 60px 20px;
+			}
+
+			/* ================= PIN SCREEN ================= */
+			#pin-screen {
+				transition:
+					opacity 0.8s ease,
+					transform 0.8s ease;
+			}
+			#pin-screen.hidden {
+				opacity: 0;
+				transform: scale(1.05);
+				pointer-events: none;
+				position: fixed;
+				inset: 0;
+			}
+
+			.lock-eyebrow {
+				font-family: "Cormorant Garamond", serif;
+				font-style: italic;
+				letter-spacing: 0.15em;
+				text-transform: uppercase;
+				font-size: 12px;
+				color: var(--rose);
+				margin-bottom: 14px;
+				opacity: 0.85;
+			}
+			.lock-title {
+				font-family: "Marck Script", cursive;
+				font-size: clamp(30px, 8vw, 52px);
+				color: var(--gold);
+				margin-bottom: 8px;
+				text-align: center;
+			}
+			.lock-sub {
+				font-family: "Cormorant Garamond", serif;
+				font-size: clamp(14px, 3.5vw, 17px);
+				color: var(--ink);
+				opacity: 0.7;
+				margin-bottom: 40px;
+				text-align: center;
+				padding: 0 10px;
+			}
+
+			.pin-dots {
+				display: flex;
+				gap: 16px;
+				margin-bottom: 36px;
+			}
+			.pin-dot {
+				width: 14px;
+				height: 14px;
+				border-radius: 50%;
+				border: 1.5px solid var(--rose);
+				transition: all 0.25s ease;
+			}
+			.pin-dot.filled {
+				background: var(--gold);
+				border-color: var(--gold);
+				box-shadow: 0 0 14px var(--gold);
+				transform: scale(1.15);
+			}
+			.pin-dots.shake {
+				animation: shake 0.4s ease;
+			}
+			@keyframes shake {
+				20% {
+					transform: translateX(-8px);
+				}
+				40% {
+					transform: translateX(8px);
+				}
+				60% {
+					transform: translateX(-6px);
+				}
+				80% {
+					transform: translateX(6px);
+				}
+				100% {
+					transform: translateX(0);
+				}
+			}
+
+			.keypad {
+				display: grid;
+				grid-template-columns: repeat(3, 64px);
+				gap: 14px;
+				justify-content: center;
+			}
+			.key {
+				width: 64px;
+				height: 64px;
+				border-radius: 50%;
+				border: 1px solid rgba(230, 196, 140, 0.35);
+				background: rgba(255, 255, 255, 0.03);
+				color: var(--ink);
+				font-family: "Cormorant Garamond", serif;
+				font-size: 22px;
+				cursor: pointer;
+				transition: all 0.2s ease;
+				backdrop-filter: blur(4px);
+				-webkit-tap-highlight-color: transparent;
+			}
+			.key:hover {
+				background: rgba(230, 196, 140, 0.12);
+				border-color: var(--gold);
+				transform: translateY(-2px);
+			}
+			.key:active {
+				transform: scale(0.94);
+				background: rgba(230, 196, 140, 0.18);
+			}
+			.key.wide {
+				font-size: 12px;
+				letter-spacing: 0.03em;
+			}
+
+			/* ================= PLAYER SCREEN ================= */
+			#player-screen {
+				display: none;
+				text-align: center;
+			}
+			#player-screen.active {
+				display: flex;
+				animation: fade-in 1s ease;
+			}
+			@keyframes fade-in {
+				from {
+					opacity: 0;
+					transform: translateY(16px);
+				}
+				to {
+					opacity: 1;
+					transform: translateY(0);
+				}
+			}
+
+			.player-eyebrow {
+				font-family: "Cormorant Garamond", serif;
+				font-style: italic;
+				font-size: 15px;
+				color: var(--rose);
+				opacity: 0.8;
+				margin-bottom: 18px;
+			}
+
+			.play-btn {
+				width: 110px;
+				height: 110px;
+				border-radius: 50%;
+				border: none;
+				background: radial-gradient(
+					circle at 35% 30%,
+					var(--rose),
+					var(--violet) 70%
+				);
+				box-shadow:
+					0 0 50px rgba(138, 92, 176, 0.55),
+					0 0 0 1px rgba(230, 196, 140, 0.4);
+				cursor: pointer;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				transition:
+					transform 0.3s ease,
+					box-shadow 0.3s ease;
+				position: relative;
+				-webkit-tap-highlight-color: transparent;
+			}
+			.play-btn:hover {
+				transform: scale(1.05);
+				box-shadow:
+					0 0 65px rgba(138, 92, 176, 0.75),
+					0 0 0 1px var(--gold);
+			}
+			.play-btn .icon {
+				width: 0;
+				height: 0;
+				border-top: 16px solid transparent;
+				border-bottom: 16px solid transparent;
+				border-left: 26px solid var(--cream);
+				margin-left: 7px;
+				transition: all 0.2s ease;
+			}
+			.play-btn.is-playing .icon {
+				width: 12px;
+				height: 32px;
+				border: none;
+				margin-left: 0;
+				background: linear-gradient(
+					90deg,
+					var(--cream) 5px,
+					transparent 5px 7px,
+					var(--cream) 7px
+				);
+			}
+
+			.play-ring {
+				position: absolute;
+				inset: -16px;
+				border-radius: 50%;
+				border: 1px solid rgba(230, 196, 140, 0.5);
+				animation: pulse-ring 2.6s ease-out infinite;
+				opacity: 0;
+			}
+			.play-btn.is-playing .play-ring {
+				opacity: 1;
+			}
+			@keyframes pulse-ring {
+				0% {
+					transform: scale(0.9);
+					opacity: 0.6;
+				}
+				100% {
+					transform: scale(1.5);
+					opacity: 0;
+				}
+			}
+
+			.player-caption {
+				margin-top: 30px;
+				font-family: "Cormorant Garamond", serif;
+				font-size: clamp(15px, 3.8vw, 18px);
+				color: var(--ink);
+				opacity: 0.75;
+				max-width: 320px;
+				padding: 0 10px;
+			}
+
+			.scroll-hint {
+				position: absolute;
+				bottom: 28px;
+				font-family: "Cormorant Garamond", serif;
+				font-size: 13px;
+				letter-spacing: 0.1em;
+				color: var(--gold);
+				opacity: 0;
+				transition: opacity 0.8s ease 1.5s;
+			}
+			.scroll-hint.show {
+				opacity: 0.75;
+			}
+			.scroll-hint .arrow {
+				display: block;
+				margin: 6px auto 0;
+				animation: bob 2s ease-in-out infinite;
+			}
+			@keyframes bob {
+				0%,
+				100% {
+					transform: translateY(0);
+				}
+				50% {
+					transform: translateY(6px);
+				}
+			}
+
+			/* ================= DAYS COUNTER ================= */
+			#counter {
+				background: linear-gradient(
+					180deg,
+					var(--plum-deep) 0%,
+					var(--plum-mid) 100%
+				);
+				text-align: center;
+			}
+			.counter-eyebrow {
+				font-family: "Cormorant Garamond", serif;
+				font-style: italic;
+				font-size: 14px;
+				color: var(--rose);
+				opacity: 0.85;
+				margin-bottom: 10px;
+			}
+			.counter-title {
+				font-family: "Marck Script", cursive;
+				font-size: clamp(26px, 6vw, 38px);
+				color: var(--gold);
+				margin-bottom: 36px;
+				text-align: center;
+				padding: 0 10px;
+			}
+			.counter-number {
+				font-family: "Cormorant Garamond", serif;
+				font-weight: 600;
+				font-size: clamp(64px, 20vw, 140px);
+				line-height: 1;
+				background: linear-gradient(180deg, var(--gold), var(--rose));
+				-webkit-background-clip: text;
+				background-clip: text;
+				color: transparent;
+				text-shadow: 0 0 60px rgba(230, 196, 140, 0.25);
+			}
+			.counter-label {
+				font-family: "Cormorant Garamond", serif;
+				font-style: italic;
+				font-size: clamp(16px, 4vw, 20px);
+				color: var(--ink);
+				opacity: 0.8;
+				margin-top: 6px;
+				letter-spacing: 0.05em;
+			}
+			.counter-sub {
+				margin-top: 34px;
+				font-family: "Cormorant Garamond", serif;
+				font-size: clamp(13px, 3.2vw, 15px);
+				color: var(--rose);
+				opacity: 0.7;
+				max-width: 380px;
+				padding: 0 10px;
+			}
+
+			/* ================= MILESTONES ================= */
+			#milestones {
+				background: var(--plum-mid);
+				padding-top: 90px;
+				padding-bottom: 90px;
+				align-items: center;
+			}
+			.milestones-title {
+				font-family: "Marck Script", cursive;
+				font-size: clamp(28px, 6vw, 40px);
+				color: var(--gold);
+				margin-bottom: 8px;
+				text-align: center;
+			}
+			.milestones-sub {
+				font-family: "Cormorant Garamond", serif;
+				font-style: italic;
+				color: var(--rose);
+				opacity: 0.8;
+				margin-bottom: 56px;
+				text-align: center;
+				padding: 0 10px;
+			}
+
+			.timeline {
+				position: relative;
+				width: 100%;
+				max-width: 600px;
+				padding-left: 28px;
+			}
+			.timeline::before {
+				content: "";
+				position: absolute;
+				left: 6px;
+				top: 6px;
+				bottom: 6px;
+				width: 1px;
+				background: linear-gradient(
+					180deg,
+					var(--gold),
+					var(--rose),
+					var(--violet)
+				);
+				opacity: 0.5;
+			}
+			.milestone {
+				position: relative;
+				margin-bottom: 44px;
+				opacity: 0;
+				transform: translateY(24px);
+				transition:
+					opacity 0.8s ease,
+					transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+			}
+			.milestone:last-child {
+				margin-bottom: 0;
+			}
+			.milestone.in-view {
+				opacity: 1;
+				transform: translateY(0);
+			}
+			.milestone::before {
+				content: "";
+				position: absolute;
+				left: -28px;
+				top: 6px;
+				width: 11px;
+				height: 11px;
+				border-radius: 50%;
+				background: var(--gold);
+				box-shadow: 0 0 12px var(--gold);
+			}
+			.milestone-date {
+				font-family: "Cormorant Garamond", serif;
+				font-style: italic;
+				font-size: 14px;
+				color: var(--gold);
+				letter-spacing: 0.05em;
+				margin-bottom: 4px;
+			}
+			.milestone-text {
+				font-family: "Cormorant Garamond", serif;
+				font-size: clamp(17px, 4vw, 21px);
+				color: var(--ink);
+				line-height: 1.4;
+			}
+
+			/* ================= GALLERY ================= */
+			#gallery {
+				align-items: center;
+				padding-top: 80px;
+				padding-bottom: 80px;
+			}
+			.gallery-title {
+				font-family: "Marck Script", cursive;
+				font-size: clamp(26px, 6vw, 42px);
+				color: var(--gold);
+				margin-bottom: 8px;
+				text-align: center;
+			}
+			.gallery-sub {
+				font-family: "Cormorant Garamond", serif;
+				font-style: italic;
+				color: var(--rose);
+				opacity: 0.8;
+				margin-bottom: 50px;
+				text-align: center;
+				padding: 0 10px;
+			}
+
+			.scatter {
+				position: relative;
+				width: 100%;
+				max-width: 900px;
+				height: 640px;
+			}
+			.photo {
+				position: absolute;
+				width: 220px;
+				background: var(--cream);
+				padding: 14px 14px 44px;
+				border-radius: 4px;
+				box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+				opacity: 0;
+				transform: translateY(40px) rotate(var(--rot));
+				transition:
+					opacity 0.9s ease,
+					transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+			}
+			.photo.in-view {
+				opacity: 1;
+				transform: translateY(0) rotate(var(--rot));
+			}
+			.photo:hover {
+				transform: translateY(-8px) rotate(0deg) scale(1.04);
+				z-index: 10;
+				box-shadow: 0 26px 50px rgba(0, 0, 0, 0.55);
+			}
+			.photo img {
+				width: 100%;
+				height: 230px;
+				object-fit: cover;
+				display: block;
+				background: linear-gradient(135deg, var(--plum-soft), var(--violet));
+			}
+			.photo-cap {
+				position: absolute;
+				bottom: 10px;
+				left: 0;
+				right: 0;
+				text-align: center;
+				font-family: "Cormorant Garamond", serif;
+				font-style: italic;
+				font-size: 14px;
+				color: var(--plum-deep);
+			}
+
+			.photo1 {
+				--rot: -7deg;
+				top: 0;
+				left: 4%;
+			}
+			.photo2 {
+				--rot: 5deg;
+				top: 40px;
+				left: 36%;
+			}
+			.photo3 {
+				--rot: -3deg;
+				top: 10px;
+				right: 2%;
+			}
+			.photo4 {
+				--rot: 8deg;
+				top: 340px;
+				left: 14%;
+			}
+			.photo5 {
+				--rot: -6deg;
+				top: 370px;
+				right: 10%;
+			}
+
+			/* ================= LETTER ================= */
+			#letter {
+				background: linear-gradient(180deg, var(--plum-deep) 0%, #1c0f24 100%);
+				padding: 100px 20px 140px;
+			}
+			.letter-paper {
+				max-width: 640px;
+				width: 100%;
+				background: rgba(247, 236, 223, 0.03);
+				border: 1px solid rgba(230, 196, 140, 0.25);
+				border-radius: 2px;
+				padding: clamp(32px, 7vw, 56px) clamp(22px, 6vw, 44px);
+				position: relative;
+			}
+			.letter-paper::before {
+				content: "";
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				height: 3px;
+				background: linear-gradient(
+					90deg,
+					transparent,
+					var(--gold),
+					transparent
+				);
+			}
+			.letter-eyebrow {
+				font-family: "Cormorant Garamond", serif;
+				font-style: italic;
+				font-size: 14px;
+				color: var(--rose);
+				text-align: right;
+				margin-bottom: 28px;
+				opacity: 0.8;
+			}
+			.letter-body {
+				font-family: "Cormorant Garamond", serif;
+				font-size: clamp(16px, 4.2vw, 21px);
+				line-height: 1.85;
+				color: var(--ink);
+			}
+			.letter-body p {
+				margin-bottom: 22px;
+			}
+			.letter-signoff {
+				margin-top: 32px;
+				font-family: "Marck Script", cursive;
+				font-size: clamp(22px, 5vw, 28px);
+				color: var(--gold);
+				text-align: right;
+			}
+
+			.secret-btn {
+				margin-top: 50px;
+				background: none;
+				border: 1px solid var(--rose);
+				color: var(--rose);
+				font-family: "Cormorant Garamond", serif;
+				font-style: italic;
+				font-size: 14px;
+				padding: 12px 24px;
+				border-radius: 30px;
+				cursor: pointer;
+				transition: all 0.3s ease;
+				-webkit-tap-highlight-color: transparent;
+			}
+			.secret-btn:hover {
+				background: var(--rose);
+				color: var(--plum-deep);
+			}
+			.secret-msg {
+				max-width: 640px;
+				margin-top: 20px;
+				font-family: "Cormorant Garamond", serif;
+				font-style: italic;
+				font-size: clamp(18px, 4vw, 20px);
+				color: var(--gold);
+				opacity: 0;
+				max-height: 0;
+				overflow: hidden;
+				transition:
+					opacity 0.6s ease,
+					max-height 0.6s ease;
+				text-align: match-parent;
+			}
+			.secret-msg.show {
+				opacity: 1;
+				max-height: 10000px;
+			}
+
+			audio {
+				display: none;
+			}
+
+			/* ================= RESPONSIVE ================= */
+			@media (max-width: 640px) {
+				section {
+					padding: 48px 16px;
+				}
+
+				.scatter {
+					height: auto;
+					display: flex;
+					flex-direction: column;
+					gap: 20px;
+					align-items: center;
+				}
+				.photo {
+					position: static;
+					transform: none !important;
+					opacity: 1;
+					width: 100%;
+					max-width: 300px;
+				}
+				.photo:hover {
+					transform: none !important;
+				}
+				.photo img {
+					height: 260px;
+				}
+
+				.keypad {
+					grid-template-columns: repeat(3, 58px);
+					gap: 12px;
+				}
+				.key {
+					width: 58px;
+					height: 58px;
+					font-size: 20px;
+				}
+
+				.timeline {
+					padding-left: 22px;
+				}
+				.milestone::before {
+					left: -22px;
+				}
+
+				.counter-number {
+					font-size: clamp(56px, 22vw, 90px);
+				}
+			}
+
+			@media (max-width: 380px) {
+				.keypad {
+					grid-template-columns: repeat(3, 52px);
+					gap: 10px;
+				}
+				.key {
+					width: 52px;
+					height: 52px;
+					font-size: 18px;
+				}
+			}
+
+			@media (prefers-reduced-motion: reduce) {
+				* {
+					animation-duration: 0.01ms !important;
+					animation-iteration-count: 1 !important;
+					transition-duration: 0.01ms !important;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="bg-particles" id="particles"></div>
+
+		<!-- ============ PIN SCREEN ============ -->
+		<section id="pin-screen">
+			<div class="lock-eyebrow">
+				I made this gift by hand, just for you, Irulan
+			</div>
+			<div class="lock-title">open with your heart</div>
+			<div class="lock-sub">enter the code only we know</div>
+
+			<div class="pin-dots" id="pinDots">
+				<span class="pin-dot"></span>
+				<span class="pin-dot"></span>
+				<span class="pin-dot"></span>
+				<span class="pin-dot"></span>
+			</div>
+
+			<div class="keypad" id="keypad">
+				<button class="key" data-num="1">1</button>
+				<button class="key" data-num="2">2</button>
+				<button class="key" data-num="3">3</button>
+				<button class="key" data-num="4">4</button>
+				<button class="key" data-num="5">5</button>
+				<button class="key" data-num="6">6</button>
+				<button class="key" data-num="7">7</button>
+				<button class="key" data-num="8">8</button>
+				<button class="key" data-num="9">9</button>
+				<button class="key wide" id="clearKey">clear</button>
+				<button class="key" data-num="0">0</button>
+				<button class="key wide" id="delKey">&larr;</button>
+			</div>
+		</section>
+
+		<!-- ============ PLAYER SCREEN ============ -->
+		<section id="player-screen">
+			<div class="player-eyebrow">press play and listen</div>
+			<button class="play-btn" id="playBtn">
+				<span class="play-ring"></span>
+				<span class="icon"></span>
+			</button>
+			<p class="player-caption">
+				this song is for the moments you're thinking of me
+			</p>
+			<div class="scroll-hint" id="scrollHint">
+				scroll down
+				<span class="arrow">&darr;</span>
+			</div>
+			<audio id="bgAudio" loop>
+				<source src="./song.mp3" type="audio/mpeg" />
+			</audio>
+		</section>
+
+		<!-- ============ DAYS COUNTER ============ -->
+		<section id="counter">
+			<div class="counter-eyebrow">since it all began</div>
+			<div class="counter-title">we have been together for</div>
+			<div class="counter-number" id="dayCount">0</div>
+			<div class="counter-label" id="dayLabel">days</div>
+			<p class="counter-sub">
+				every single one of them, counted from the day you became mine
+			</p>
+		</section>
+
+		<!-- ============ MILESTONES ============ -->
+		<section id="milestones">
+			<div class="milestones-title">our story, dated</div>
+			<div class="milestones-sub">moments that changed everything</div>
+			<div class="timeline" id="timeline">
+				<div class="milestone">
+					<div class="milestone-date">January 26, 2026</div>
+					<div class="milestone-text">The day we met.</div>
+				</div>
+				<div class="milestone">
+					<div class="milestone-date">February 4, 2026</div>
+					<div class="milestone-text">The day we first spoke.</div>
+				</div>
+				<div class="milestone">
+					<div class="milestone-date">February 11, 2026</div>
+					<div class="milestone-text">The day I made the first move.</div>
+				</div>
+				<div class="milestone">
+					<div class="milestone-date">March 7, 2026</div>
+					<div class="milestone-text">The day our relationship began.</div>
+				</div>
+				<div class="milestone">
+					<div class="milestone-date">March 10, 2026</div>
+					<div class="milestone-text">Our first kiss.</div>
+				</div>
+				<div class="milestone">
+					<div class="milestone-date">Today and</div>
+					<div class="milestone-text">Forever...</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- ============ GALLERY ============ -->
+		<section id="gallery">
+			<div class="gallery-title">five moments of us</div>
+			<div class="gallery-sub">each one, a small eternity</div>
+			<div class="scatter">
+				<figure class="photo photo1">
+					<img src="./IMG-20260309-WA0003.jpg" alt="photo 1" />
+					<figcaption class="photo-cap">first date</figcaption>
+				</figure>
+				<figure class="photo photo2">
+					<img src="./IMG_3168.JPG" alt="photo 2" />
+					<figcaption class="photo-cap">together in KL</figcaption>
+				</figure>
+				<figure class="photo photo3">
+					<img src="./IMG_2679.jpg" alt="photo 3" />
+					<figcaption class="photo-cap">together in Thailand</figcaption>
+				</figure>
+				<figure class="photo photo4">
+					<img src="./IMG-20260322-WA0003.jpg" alt="photo 4" />
+					<figcaption class="photo-cap">second date, new iphone</figcaption>
+				</figure>
+				<figure class="photo photo5">
+					<img src="./IMG_4293.jpg" alt="photo 5" />
+					<figcaption class="photo-cap">a quite evening</figcaption>
+				</figure>
+			</div>
+		</section>
+
+		<!-- ============ LETTER ============ -->
+		<section id="letter">
+			<div class="letter-paper">
+				<div class="letter-eyebrow">to Irulan</div>
+				<div class="letter-body">
+					<p>Hey, my pretty girl</p>
+					<p>
+						Irulan, je suis reconnaissant de t’avoir comme petite amie. Depuis
+						que je t’ai rencontrée, ma vie a complètement changé. Je t’aimerai
+						toujours, peu importe les circonstances et les situations. Chaque
+						jour, mon amour pour toi devient encore plus fort, et je veux
+						simplement te dire ceci : je t’aime sincèrement, je te serai
+						toujours fidèle et je continuerai à devenir meilleur chaque jour,
+						même si cela me demande du temps, des efforts ou certains
+						sacrifices. Parce que je veux qu’un jour tu puisses me revoir dans
+						ma meilleure forme, encore meilleur que lorsque nous nous sommes
+						rencontrés pour la première fois.
+					</p>
+					<p>
+						Tu es devenue pour moi bien plus que ma petite amie. Tu es devenue
+						la personne avec qui j’ai envie de partager ma vie. J’ai envie
+						d’être à tes côtés dans les jours ordinaires comme dans les moments
+						les plus importants, de me promener avec toi le soir, de cuisiner,
+						de rire pour des bêtises, de parler de nos projets et de nous
+						soutenir lorsque les choses deviennent difficiles. J’aime imaginer
+						notre avenir non pas comme un rêve lointain, mais comme quelque
+						chose vers lequel nous avançons progressivement ensemble.
+					</p>
+					<p>
+						Je ne sais pas tout ce que nous allons encore devoir traverser ni
+						quelles épreuves nous attendent. Mais je sais une chose : je veux
+						les traverser avec toi. Je veux continuer à te découvrir, voir tes
+						sourires, entendre ta voix, découvrir ton monde et te montrer le
+						mien. Et même si des kilomètres nous séparent aujourd’hui, tu restes
+						malgré tout une personne qui m’est extrêmement proche.
+					</p>
+					<p>
+						Merci d’être un jour entrée dans ma vie. Merci pour ta tendresse,
+						pour ton amour, pour nos conversations et pour tous ces moments qui
+						font déjà partie de mes souvenirs. Je tiens énormément à toi et à ce
+						que nous avons.
+					</p>
+					<p>
+						Et si un jour tu me demandes ce que je ressentais lorsque je
+						préparais ce cadeau pour toi, je veux que tu saches une chose :
+						j’étais simplement assis en pensant à une magnifique Française que
+						j’aime vraiment de tout mon cœur. À toi, Irulan.
+					</p>
+					<p>Je t’aime. Et je veux continuer à te choisir, chaque jour. ❤️</p>
+				</div>
+				<div class="letter-signoff">yours Rahat, always</div>
+
+				<button class="secret-btn" id="secretBtn">AND THATS NOT ALL</button>
+				<div class="secret-msg" id="secretMsg">
+					... я поднял свои старые заметки и записи. Там действительно оказалась
+					эта фраза написанная мною "so close, but so far", но написанная на
+					русском языке. Я долго соображал почему я решил написать только одну
+					фразу в этот день. Но потом до меня дошло, что в тот день я лежал и
+					долго размышлял о тебе и о себе. Тогда было только начало отношений и
+					пока что мы друг другу еще раскрылись полностью, только проверяли.
+					Меня осенило, что в будущем непременно будет испытание под названием
+					дистанция и уже заранее готовил себя ментально, морально и внутренне.
+					Именно тогда я пообещал себе, что если она будет моей девушкой, то она
+					станет для меня первой и единственной, с которой я захочу провести
+					остаток своей жизни, даже если у нас много отличий. Если мое сердце и
+					разум подсказывают это, то я не стану противиться этому и приму самое
+					непростое решение в своей жизни: быть сфокусированным на своих целях и
+					на себе на столько, на сколько это возможно, даже если это будет
+					стоить жертв и недопониманий действий с моих сторон. Я готов сделать
+					это, раз я однажды выбрал ее. И сделать счастливой себя и ее. Именно
+					поэтому после таких размышлений в мою голову пришла очень красивая
+					фраза, на русском она звучит: она будет так близко, но так далеко. То
+					же самое значение что и so close but so far. Ею я действительно описал
+					будущее испытание которое нужно будет пройти. И ты первый человек,
+					ради которого я принял такое решение, поэтому для меня такие мысли и
+					слова не являются пустым местом. Я очень ценю тебя и мне становится
+					неистово больно внутри, когда я застреваю на месте. И когда моя
+					любимая девушка видит мои старания и хвалит меня за мой успех, это
+					невероятно заряжает меня, как и любого другого парня, схожих на меня,
+					для такого рода парней такие слова, услышанные от любимой девушки
+					являются лекарством и заживлением всех ран и успокоение внутренней
+					бури. Я всегда намерен на сохранение такого союза который мы уже
+					успели построить, учитываю твои пожелания, всегда намерен вкладываться
+					в них и ни в коем случае не допускать токсичных отношений. Мне претит
+					это. Относится к тебе пренебрежительным образом – означает для меня
+					предательством себя и своих принципов. Наверняка у тебя могло
+					сложиться такое впечатление недавно, но я стремлюсь отбросить у тебя
+					их, ведь это не так. Я понимаю и возможно, это моя ошибка. Теперь,
+					учитывая все прошлые уроки жизни, больше не представляю себе возможным
+					такие тяжелые недопонимания. Получилось очень длинно и оставляю за
+					собой право оставить этот текст на русском языке, чтобы ты увидела мои
+					мысли воочию и то, как я могу излагать их. Лишь я хочу, чтобы ты
+					всегда знала, что я ценю и люблю тебя и хочу отдавать тебе свое тепло,
+					от которого я греюсь внутри. Спасибо, что прочитала это и прониклась
+					моими словами. Сейчас у меня все возвращается все на круги своя и
+					готов идти только вверх, моя жизнь уже совершенно другая, потому что в
+					ней появилась такой важный человек, как ты. Целую, обнимаю и скучаю.
+				</div>
+			</div>
+		</section>
+
+		<script>
+			// ---------- ambient particles ----------
+			const particleWrap = document.getElementById("particles");
+			for (let i = 0; i < 22; i++) {
+				const p = document.createElement("span");
+				const size = 2 + Math.random() * 4;
+				p.style.width = size + "px";
+				p.style.height = size + "px";
+				p.style.left = Math.random() * 100 + "%";
+				p.style.animationDuration = 10 + Math.random() * 14 + "s";
+				p.style.animationDelay = Math.random() * 10 + "s";
+				particleWrap.appendChild(p);
+			}
+
+			// ---------- PIN LOGIC ----------
+			const CORRECT_PIN = "0703";
+			let currentPin = "";
+			const dots = document.querySelectorAll(".pin-dot");
+			const pinDotsWrap = document.getElementById("pinDots");
+			const keypad = document.getElementById("keypad");
+			const pinScreen = document.getElementById("pin-screen");
+			const playerScreen = document.getElementById("player-screen");
+			const scrollHint = document.getElementById("scrollHint");
+
+			function updateDots() {
+				dots.forEach((d, i) =>
+					d.classList.toggle("filled", i < currentPin.length),
+				);
+			}
+
+			function wrongPin() {
+				pinDotsWrap.classList.add("shake");
+				setTimeout(() => {
+					pinDotsWrap.classList.remove("shake");
+					currentPin = "";
+					updateDots();
+				}, 400);
+			}
+
+			function unlock() {
+				pinScreen.classList.add("hidden");
+				playerScreen.classList.add("active");
+				setTimeout(() => scrollHint.classList.add("show"), 300);
+			}
+
+			keypad.addEventListener("click", (e) => {
+				const btn = e.target.closest("button");
+				if (!btn) return;
+
+				if (btn.id === "clearKey") {
+					currentPin = "";
+					updateDots();
+					return;
+				}
+				if (btn.id === "delKey") {
+					currentPin = currentPin.slice(0, -1);
+					updateDots();
+					return;
+				}
+				if (btn.dataset.num !== undefined && currentPin.length < 4) {
+					currentPin += btn.dataset.num;
+					updateDots();
+					if (currentPin.length === 4) {
+						setTimeout(() => {
+							if (currentPin === CORRECT_PIN) {
+								unlock();
+							} else {
+								wrongPin();
+							}
+						}, 180);
+					}
+				}
+			});
+
+			document.addEventListener("keydown", (e) => {
+				if (pinScreen.classList.contains("hidden")) return;
+				if (/^[0-9]$/.test(e.key) && currentPin.length < 4) {
+					currentPin += e.key;
+					updateDots();
+					if (currentPin.length === 4) {
+						setTimeout(() => {
+							if (currentPin === CORRECT_PIN) unlock();
+							else wrongPin();
+						}, 180);
+					}
+				} else if (e.key === "Backspace") {
+					currentPin = currentPin.slice(0, -1);
+					updateDots();
+				}
+			});
+
+			// ---------- PLAYER ----------
+			const playBtn = document.getElementById("playBtn");
+			const bgAudio = document.getElementById("bgAudio");
+			let isPlaying = false;
+
+			playBtn.addEventListener("click", () => {
+				if (!isPlaying) {
+					bgAudio.play().catch(() => {
+						/* autoplay restrictions fallback */
+					});
+					playBtn.classList.add("is-playing");
+				} else {
+					bgAudio.pause();
+					playBtn.classList.remove("is-playing");
+				}
+				isPlaying = !isPlaying;
+			});
+
+			// ---------- DAYS COUNTER ----------
+			// Relationship start date: March 7, 2026 (the day it officially began)
+			const startDate = new Date(2026, 2, 7); // month is 0-indexed: 2 = March
+			const dayCountEl = document.getElementById("dayCount");
+			const dayLabelEl = document.getElementById("dayLabel");
+
+			function pluralDays(n) {
+				return n === 1 ? "day" : "days";
+			}
+
+			function updateCounter() {
+				const now = new Date();
+				const diffMs = now - startDate;
+				const days = Math.max(0, Math.floor(diffMs / (1000 * 60 * 60 * 24)));
+				dayCountEl.textContent = days;
+				dayLabelEl.textContent = pluralDays(days);
+			}
+			updateCounter();
+			setInterval(updateCounter, 60 * 1000);
+
+			// ---------- GALLERY + MILESTONES reveal on scroll ----------
+			const revealEls = document.querySelectorAll(".photo, .milestone");
+			const io = new IntersectionObserver(
+				(entries) => {
+					entries.forEach((entry) => {
+						if (entry.isIntersecting) {
+							entry.target.classList.add("in-view");
+						}
+					});
+				},
+				{ threshold: 0.2 },
+			);
+			revealEls.forEach((el) => io.observe(el));
+
+			// ---------- secret message ----------
+			const secretBtn = document.getElementById("secretBtn");
+			const secretMsg = document.getElementById("secretMsg");
+			secretBtn.addEventListener("click", () => {
+				secretMsg.classList.toggle("show");
+				secretBtn.textContent = secretMsg.classList.contains("show")
+					? "hide the secret again"
+					: "AND THATS NOT ALL";
+			});
+		</script>
+	</body>
+</html>
