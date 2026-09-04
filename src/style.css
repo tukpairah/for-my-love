@@ -226,6 +226,168 @@ li a {
     border: 1px solid #DAF765;
 }
 
+  .timeline-section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 20px 100px;
+    font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  }
+ 
+  .timeline-title {
+    font-size: 48px;
+    font-weight: 800;
+    color: #2A2333;
+    margin: 0 0 8px;
+  }
+ 
+  .timeline-subtitle {
+    font-size: 16px;
+    color: #6E6478;
+    margin: 0 0 40px;
+  }
+ 
+  /* ---------- Together-since counter ---------- */
+  .counter-card {
+    background: linear-gradient(135deg, #EDE5F8, #F6F2FB);
+    border: 1px solid #E7DEF5;
+    border-radius: 18px;
+    padding: 28px 24px;
+    margin-bottom: 56px;
+    text-align: center;
+  }
+ 
+  .counter-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: #6B4E71;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin: 0 0 18px;
+  }
+ 
+  .counter-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+ 
+  .counter-unit {
+    background: #FFFFFF;
+    border-radius: 12px;
+    padding: 14px 6px;
+  }
+ 
+  .counter-number {
+    font-size: 32px;
+    font-weight: 800;
+    color: #6B4E71;
+    line-height: 1;
+    margin: 0 0 4px;
+  }
+ 
+  .counter-unit-label {
+    font-size: 12px;
+    color: #8C819A;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+ 
+  .counter-since {
+    font-size: 13px;
+    color: #8C819A;
+    margin: 16px 0 0;
+  }
+ 
+  /* ---------- Timeline ---------- */
+  .timeline {
+    position: relative;
+    padding-left: 40px;
+  }
+ 
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 10px;
+    top: 6px;
+    bottom: 6px;
+    width: 2px;
+    background: #D4C7EA;
+  }
+ 
+  .date-card {
+    position: relative;
+    background: #FFFFFF;
+    border: 1px solid #E7DEF5;
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+  }
+ 
+  .date-card::before {
+    content: "";
+    position: absolute;
+    left: -34px;
+    top: 24px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #B8A6D9;
+    border: 3px solid #D4C7EA;
+  }
+ 
+  .date-label {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 700;
+    color: #6B4E71;
+    background: #F3EFF9;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    letter-spacing: 0.3px;
+  }
+ 
+  .date-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #2A2333;
+    margin: 0 0 6px;
+  }
+ 
+  .date-desc {
+    font-size: 14px;
+    color: #6E6478;
+    line-height: 1.5;
+    margin: 0;
+  }
+ 
+  /* ---------- Responsive ---------- */
+  @media (max-width: 640px) {
+    .timeline-section { padding: 40px 16px 70px; }
+    .timeline-title { font-size: 32px; }
+    .timeline-subtitle { font-size: 14px; margin-bottom: 28px; }
+ 
+    .counter-card { padding: 22px 16px; margin-bottom: 40px; }
+    .counter-grid { grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .counter-number { font-size: 22px; }
+    .counter-unit-label { font-size: 10px; }
+    .counter-unit { padding: 10px 4px; }
+ 
+    .timeline { padding-left: 28px; }
+    .timeline::before { left: 7px; }
+    .date-card { padding: 16px 16px; margin-bottom: 18px; }
+    .date-card::before { left: -25px; top: 20px; width: 10px; height: 10px; }
+    .date-title { font-size: 17px; }
+    .date-desc { font-size: 13px; }
+  }
+ 
+  @media (max-width: 400px) {
+    .counter-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  }
+
+
 @media (max-width: 768px) {
     .burger {
         display: block;
