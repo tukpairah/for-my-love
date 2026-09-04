@@ -92,7 +92,7 @@
 
 <!-- =========================================================
      OUR STORY, DATED — elegant timeline
-     Dark plum background, gold accents, cursive title.
+     Light lavender background, dark plum text, gold accents.
      Paste this whole block into your page.
      To add a new date, duplicate one .entry block below.
      ========================================================= -->
@@ -101,7 +101,7 @@
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;1,500&family=Dancing+Script:wght@600&display=swap');
 
   .story-section {
-    background: #2E1F3D;
+    background: #D4C7EA;
     padding: 100px 20px 120px;
     font-family: "Playfair Display", Georgia, serif;
   }
@@ -115,7 +115,7 @@
     font-family: "Dancing Script", cursive;
     font-weight: 600;
     font-size: 56px;
-    color: #E8D4A0;
+    color: #4A2E63;
     text-align: center;
     margin: 0 0 8px;
   }
@@ -123,7 +123,7 @@
   .story-subtitle {
     font-style: italic;
     font-size: 16px;
-    color: #B8A6D9;
+    color: #5C4A73;
     text-align: center;
     margin: 0 0 56px;
   }
@@ -133,39 +133,28 @@
     text-align: center;
     margin: 0 0 64px;
     padding-bottom: 48px;
-    border-bottom: 1px solid rgba(232, 212, 160, 0.2);
+    border-bottom: 1px solid rgba(74, 46, 99, 0.25);
   }
 
   .counter-label {
     font-style: italic;
     font-size: 14px;
     letter-spacing: 1px;
-    color: #B8A6D9;
-    margin: 0 0 20px;
-  }
-
-  .counter-row {
-    display: flex;
-    justify-content: center;
-    gap: 32px;
-    flex-wrap: wrap;
-  }
-
-  .counter-unit {
-    min-width: 70px;
+    color: #5C4A73;
+    margin: 0 0 16px;
   }
 
   .counter-number {
-    font-size: 34px;
-    color: #E8D4A0;
+    font-size: 48px;
+    color: #4A2E63;
     line-height: 1;
     margin: 0 0 6px;
   }
 
   .counter-unit-label {
     font-style: italic;
-    font-size: 12px;
-    color: #9C8CAE;
+    font-size: 13px;
+    color: #5C4A73;
     letter-spacing: 0.5px;
   }
 
@@ -182,7 +171,7 @@
     top: 6px;
     bottom: 6px;
     width: 1px;
-    background: rgba(232, 212, 160, 0.35);
+    background: rgba(74, 46, 99, 0.35);
   }
 
   .entry {
@@ -202,20 +191,19 @@
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background: #E8D4A0;
-    box-shadow: 0 0 6px rgba(232, 212, 160, 0.6);
+    background: #4A2E63;
   }
 
   .entry-date {
     font-style: italic;
     font-size: 15px;
-    color: #D9BE7E;
+    color: #6B4E71;
     margin: 0 0 6px;
   }
 
   .entry-text {
     font-size: 22px;
-    color: #F0E9D8;
+    color: #2E1F3D;
     margin: 0;
   }
 
@@ -226,10 +214,8 @@
     .story-subtitle { font-size: 14px; margin-bottom: 40px; }
 
     .counter-card { margin-bottom: 44px; padding-bottom: 32px; }
-    .counter-row { gap: 18px; }
-    .counter-unit { min-width: 56px; }
-    .counter-number { font-size: 24px; }
-    .counter-unit-label { font-size: 10px; }
+    .counter-number { font-size: 34px; }
+    .counter-unit-label { font-size: 11px; }
 
     .timeline { padding-left: 26px; }
     .timeline::before { left: 4px; }
@@ -237,12 +223,6 @@
     .entry::before { left: -26px; width: 8px; height: 8px; }
     .entry-date { font-size: 13px; }
     .entry-text { font-size: 18px; }
-  }
-
-  @media (max-width: 380px) {
-    .counter-row { gap: 12px; }
-    .counter-unit { min-width: 48px; }
-    .counter-number { font-size: 20px; }
   }
 </style>
 
@@ -252,27 +232,11 @@
     <h1 class="story-title">our story, dated</h1>
     <p class="story-subtitle">moments that changed everything</p>
 
-    <!-- Live counter since March 7, 2026 -->
+    <!-- Live counter since March 7, 2026 — days only -->
     <div class="counter-card">
       <p class="counter-label">together since March 7, 2026</p>
-      <div class="counter-row">
-        <div class="counter-unit">
-          <div class="counter-number" id="c-days">0</div>
-          <div class="counter-unit-label">days</div>
-        </div>
-        <div class="counter-unit">
-          <div class="counter-number" id="c-hours">0</div>
-          <div class="counter-unit-label">hours</div>
-        </div>
-        <div class="counter-unit">
-          <div class="counter-number" id="c-mins">0</div>
-          <div class="counter-unit-label">minutes</div>
-        </div>
-        <div class="counter-unit">
-          <div class="counter-number" id="c-secs">0</div>
-          <div class="counter-unit-label">seconds</div>
-        </div>
-      </div>
+      <div class="counter-number" id="c-days">0</div>
+      <div class="counter-unit-label">days</div>
     </div>
 
     <div class="timeline">
@@ -323,22 +287,15 @@
       if (diff < 0) diff = 0;
 
       var days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      var hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      var mins = Math.floor((diff / (1000 * 60)) % 60);
-      var secs = Math.floor((diff / 1000) % 60);
-
       document.getElementById("c-days").textContent = days;
-      document.getElementById("c-hours").textContent = hours;
-      document.getElementById("c-mins").textContent = mins;
-      document.getElementById("c-secs").textContent = secs;
     }
 
     update();
-    setInterval(update, 1000);
+    setInterval(update, 60 * 1000);
   })();
 </script>
-                
 
+                
             </div>
         </div>
     </div>
