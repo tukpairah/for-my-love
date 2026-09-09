@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notre calendrier café ☕</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/2.44.0/tabler-icons.min.css">
+<script src="cartes.js"></script>
+<style>
+  :root{
+    --coffee-dark:#3b2419;
+    --coffee:#6f4630;
+    --coffee-mid:#9c6b4a;
+    --coffee-light:#c9a184;
+    --cream:#f4e6d3;
+    --cream-soft:#fbf3e7;
+    --paper:#efe0c9;
+    --paper-edge:#d9c3a0;
+    --accent:#a8582f;
+    --locked:#b7a892;
+    --shadow:0 10px 30px rgba(59,36,25,0.18);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Poppins',sans-serif;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(159,109,68,0.10), transparent 40%),
+      radial-gradient(circle at 85% 75%, rgba(159,109,68,0.12), transparent 45%),
+      var(--cream-soft);
+    color:var(--coffee-dark);
+    min-height:100vh;
+    padding:0 0 60px;
+  }
+  .stains{
+    position:fixed; inset:0; pointer-events:none; z-index:0; opacity:0.5;
+  }
+  .stains svg{position:absolute;}
+  header{
+    text-align:center;
+    padding:56px 20px 28px;
+    position:relative;
+    z-index:1;
+  }
+  .cup-icon{
+    font-size:34px;
+    color:var(--coffee);
+    display:block;
+    margin-bottom:10px;
+  }
+  h1{
+    font-family:'Playfair Display',serif;
+    font-weight:700;
+    font-size:clamp(26px,5vw,42px);
+    margin:0 0 8px;
+    color:var(--coffee-dark);
+    letter-spacing:0.3px;
+  }
+  .subtitle{
+    font-size:clamp(14px,2.4vw,17px);
+    color:var(--coffee);
+    font-style:italic;
+    font-family:'Playfair Display',serif;
+    max-width:560px;
+    margin:0 auto;
+    line-height:1.6;
+  }
+  .progress-wrap{
+    max-width:420px;
+    margin:26px auto 0;
+    padding:0 20px;
+  }
+  .progress-label{
+    font-size:12px;
+    color:var(--coffee);
+    text-align:center;
+    margin-bottom:8px;
+    letter-spacing:0.5px;
+  }
+  .progress-track{
+    height:6px;
+    border-radius:6px;
+    background:var(--paper-edge);
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    background:linear-gradient(90deg,var(--coffee-mid),var(--coffee));
+    border-radius:6px;
+    transition:width 0.6s ease;
+  }
+  .grid{
+    max-width:980px;
+    margin:44px auto 0;
+    padding:0 20px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:18px;
+    position:relative;
+    z-index:1;
+  }
+  .card{
+    aspect-ratio:1/1.05;
+    border-radius:14px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    cursor:pointer;
+    position:relative;
+    border:1px solid var(--paper-edge);
+    background:var(--paper);
+    box-shadow:0 4px 14px rgba(59,36,25,0.10);
+    transition:transform 0.25s ease, box-shadow 0.25s ease;
+    overflow:hidden;
+  }
+  .card::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(circle at 30% 20%, rgba(159,109,68,0.10), transparent 55%),
+      radial-gradient(circle at 75% 80%, rgba(159,109,68,0.08), transparent 50%);
+  }
+  .card.available:hover{
+    transform:translateY(-4px);
+    box-shadow:var(--shadow);
+  }
+  .card .daynum{
+    font-family:'Playfair Display',serif;
+    font-weight:700;
+    font-size:26px;
+    color:var(--coffee-dark);
+    z-index:1;
+  }
+  .card .daylabel{
+    font-size:11px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:var(--coffee);
+    z-index:1;
+  }
+  .card.opened{
+    background:linear-gradient(160deg,var(--coffee-light),var(--paper));
+  }
+  .card.opened .daynum, .card.opened .daylabel{color:var(--coffee-dark);}
+  .card.opened .check{
+    position:absolute; top:8px; right:8px; font-size:16px; color:var(--coffee); z-index:1;
+  }
+  .card.today{
+    border:2px solid var(--accent);
+    box-shadow:0 0 0 4px rgba(168,88,47,0.12);
+  }
+  .card.today::after{
+    content:"aujourd'hui";
+    position:absolute;
+    bottom:8px;
+    font-size:9px;
+    letter-spacing:0.6px;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+    z-index:1;
+  }
+  .card.locked{
+    background:repeating-linear-gradient(135deg,var(--locked) 0px,var(--locked) 8px,#c4b9a3 8px,#c4b9a3 16px);
+    opacity:0.55;
+    cursor:not-allowed;
+  }
+  .card.locked .daynum,.card.locked .daylabel{color:#5c5344;}
+  .card.locked .lock-icon{
+    position:absolute; top:8px; right:8px; font-size:15px; color:#5c5344; z-index:1;
+  }
+  .card .icon-big{
+    font-size:22px;
+    color:var(--coffee);
+    z-index:1;
+  }
+
+  .overlay{
+    position:fixed; inset:0;
+    background:rgba(59,36,25,0.55);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:50;
+    padding:20px;
+  }
+  .overlay.show{display:flex;}
+  .letter{
+    background:var(--cream);
+    max-width:460px;
+    width:100%;
+    border-radius:16px;
+    padding:38px 32px 32px;
+    position:relative;
+    box-shadow:0 20px 60px rgba(0,0,0,0.35);
+    border:1px solid var(--paper-edge);
+    max-height:85vh;
+    overflow-y:auto;
+  }
+  .letter::before{
+    content:"";
+    position:absolute; inset:0;
+    border-radius:16px;
+    background:radial-gradient(circle at 20% 10%, rgba(159,109,68,0.08), transparent 50%);
+    pointer-events:none;
+  }
+  .letter-close{
+    position:absolute; top:14px; right:14px;
+    width:30px; height:30px;
+    border-radius:50%;
+    border:none;
+    background:var(--paper);
+    color:var(--coffee-dark);
+    font-size:16px;
+    cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .letter-icon{
+    font-size:30px;
+    color:var(--coffee);
+    margin-bottom:12px;
+  }
+  .letter-day{
+    font-size:11px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:6px;
+  }
+  .letter-title{
+    font-family:'Playfair Display',serif;
+    font-weight:700;
+    font-size:24px;
+    color:var(--coffee-dark);
+    margin:0 0 16px;
+    line-height:1.3;
+  }
+  .letter-text{
+    font-family:'Playfair Display',serif;
+    font-style:italic;
+    font-size:17px;
+    line-height:1.75;
+    color:var(--coffee-dark);
+    white-space:pre-line;
+  }
+  .letter-sign{
+    margin-top:22px;
+    padding-top:16px;
+    border-top:1px solid var(--paper-edge);
+    font-size:13px;
+    color:var(--coffee);
+    text-align:right;
+    font-style:italic;
+  }
+  footer{
+    text-align:center;
+    margin-top:56px;
+    font-size:12px;
+    color:var(--coffee);
+    opacity:0.7;
+    position:relative; z-index:1;
+  }
+  @media (max-width:480px){
+    .grid{grid-template-columns:repeat(3,1fr); gap:12px;}
+    .card{border-radius:12px;}
+    .letter{padding:30px 22px 26px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="stains" aria-hidden="true">
+  <svg width="140" height="140" style="top:8%;left:4%;opacity:0.25;" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="#6f4630" stroke-width="6"/></svg>
+  <svg width="90" height="90" style="bottom:6%;right:6%;opacity:0.2;" viewBox="0 0 100 100"><circle cx="50" cy="50" r="35" fill="none" stroke="#6f4630" stroke-width="5"/></svg>
+</div>
+
+<header>
+  <i class="ti ti-coffee cup-icon" aria-hidden="true"></i>
+  <h1>Notre calendrier café</h1>
+  <p class="subtitle">14 jours, 14 pensées pour toi — une tasse de courage par jour, jusqu'à la fin de tes examens.</p>
+  <div class="progress-wrap">
+    <div class="progress-label" id="progressLabel"></div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+</header>
+
+<main class="grid" id="grid"></main>
+
+<footer>fait avec ☕ et amour, depuis Aktobe jusqu'à Paris</footer>
+
+<div class="overlay" id="overlay">
+  <div class="letter">
+    <button class="letter-close" id="closeBtn" aria-label="Fermer"><i class="ti ti-x" aria-hidden="true"></i></button>
+    <i class="ti ti-coffee letter-icon" id="letterIcon" aria-hidden="true"></i>
+    <div class="letter-day" id="letterDay"></div>
+    <h2 class="letter-title" id="letterTitle"></h2>
+    <p class="letter-text" id="letterText"></p>
+    <div class="letter-sign">— ton garçon kazakh, toujours près de toi</div>
+  </div>
+</div>
+
+<script>
+function daysSinceStart(){
+  const start = new Date(START_DATE + "T00:00:00");
+  const now = new Date();
+  const startMid = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+  const nowMid = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const diff = Math.round((nowMid - startMid) / 86400000);
+  return diff + 1;
+}
+
+const todayIndex = daysSinceStart();
+const OPENED_KEY = "coffee_advent_opened";
+
+function getOpened(){
+  try{
+    return JSON.parse(localStorage.getItem(OPENED_KEY) || "[]");
+  }catch(e){ return []; }
+}
+function markOpened(day){
+  const opened = getOpened();
+  if(!opened.includes(day)){
+    opened.push(day);
+    try{ localStorage.setItem(OPENED_KEY, JSON.stringify(opened)); }catch(e){}
+  }
+}
+
+const grid = document.getElementById("grid");
+const opened = getOpened();
+let unlockedCount = 0;
+
+CARTES.forEach(c => {
+  const isUnlocked = c.day <= todayIndex;
+  const isOpened = opened.includes(c.day);
+  const isToday = c.day === todayIndex;
+  if(isUnlocked) unlockedCount++;
+
+  const div = document.createElement("div");
+  div.className = "card " + (isUnlocked ? "available" : "locked") + (isOpened ? " opened" : "") + (isToday ? " today" : "");
+
+  if(isUnlocked){
+    div.innerHTML = `
+      ${isOpened ? '<i class="ti ti-check check" aria-hidden="true"></i>' : ''}
+      <i class="ti ti-${c.icon || 'coffee'} icon-big" aria-hidden="true"></i>
+      <div class="daynum">${c.day}</div>
+      <div class="daylabel">jour</div>
+    `;
+    div.addEventListener("click", () => openLetter(c));
+  } else {
+    div.innerHTML = `
+      <i class="ti ti-lock lock-icon" aria-hidden="true"></i>
+      <i class="ti ti-coffee icon-big" aria-hidden="true"></i>
+      <div class="daynum">${c.day}</div>
+      <div class="daylabel">jour</div>
+    `;
+  }
+  grid.appendChild(div);
+});
+
+document.getElementById("progressLabel").textContent =
+  `${Math.min(unlockedCount,14)} sur 14 tasses versées`;
+document.getElementById("progressFill").style.width =
+  (Math.min(unlockedCount,14) / 14 * 100) + "%";
+
+const overlay = document.getElementById("overlay");
+function openLetter(c){
+  document.getElementById("letterIcon").className = "ti ti-" + (c.icon || "coffee") + " letter-icon";
+  document.getElementById("letterDay").textContent = "jour " + c.day;
+  document.getElementById("letterTitle").textContent = c.title;
+  document.getElementById("letterText").textContent = c.text;
+  overlay.classList.add("show");
+  markOpened(c.day);
+  const cardEl = grid.children[c.day - 1];
+  if(cardEl && !cardEl.querySelector(".check")){
+    cardEl.classList.add("opened");
+    cardEl.insertAdjacentHTML("afterbegin", '<i class="ti ti-check check" aria-hidden="true"></i>');
+  }
+}
+document.getElementById("closeBtn").addEventListener("click", () => overlay.classList.remove("show"));
+overlay.addEventListener("click", (e) => { if(e.target === overlay) overlay.classList.remove("show"); });
+</script>
+
+</body>
+</html>
