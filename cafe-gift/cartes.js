@@ -6,9 +6,7 @@ const CARTES = [
     day: 1,
     title: "Pour toi",
     icon: "coffee",
-    text: "Je voulais simplement être là pour toi, à ma manière. J’aurais aimé pouvoir être près de toi, te préparer un café, te prendre dans mes bras et te dire doucement que tout ira bien. Comme je ne peux pas encore le faire, j’ai décidé de t’offrir un peu de ma présence autrement : une petite pensée pour toi, chaque jour.
-
-Je veux que tu saches que je suis profondément fier de toi. Je crois en toi, en ton intelligence, en ta force et en tout ce dont tu es capable. Et surtout, je veux que tu n’oublies jamais que je t’aime énormément. La distance entre nous n’est que temporaire. Elle ne change rien à ce que je ressens pour toi. Jusqu’au jour où je pourrai enfin te serrer dans mes bras, je serai là, à mes côtés dans tes pensées comme tu es dans les miennes."
+    text: "Je voulais simplement être là pour toi, à ma manière. J’aurais aimé pouvoir être près de toi, te préparer un café, te prendre dans mes bras et te dire doucement que tout ira bien. Comme je ne peux pas encore le faire, j’ai décidé de t’offrir un peu de ma présence autrement : une petite pensée pour toi, chaque jour. Je veux que tu saches que je suis profondément fier de toi. Je crois en toi, en ton intelligence, en ta force et en tout ce dont tu es capable. Et surtout, je veux que tu n’oublies jamais que je t’aime énormément. La distance entre nous n’est que temporaire. Elle ne change rien à ce que je ressens pour toi. Jusqu’au jour où je pourrai enfin te serrer dans mes bras, je serai là, à mes côtés dans tes pensées comme tu es dans les miennes."
   },
   {
     day: 2,
