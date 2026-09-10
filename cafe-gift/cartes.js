@@ -12,9 +12,9 @@ Je veux que tu saches que je suis profondément fier de toi. Je crois en toi, en
   },
   {
     day: 2,
-    title: "",
+    title: "Appuie-toi sur moi",
     icon: "bolt",
-    text: ""
+    text: "Si aujourd’hui tu te sens fatiguée, stressée ou que tout te paraît un peu trop lourd, pense simplement à moi. Même si je ne peux pas être assis près de toi en ce moment, j’aimerais que tu sentes ma présence à travers ces quelques mots. Tu peux m’imaginer juste à côté de toi, te prendre doucement dans mes bras et te dire : « Je suis là. Tu n’as pas à traverser tout ça toute seule. » Je serai là pour toi dans les bons moments, mais encore plus dans ceux où tu as besoin de quelqu’un sur qui t’appuyer. Alors avance tranquillement, une chose après l’autre. Et si la journée devient difficile, rappelle-toi qu’au Kazakhstan, il y a un garçon qui pense à toi, qui t’aime de tout son cœur et qui aurait donné n’importe quoi pour pouvoir te serrer dans ses bras aujourd’hui. La distance nous sépare seulement physiquement, mon amour. Elle ne m’empêche pas d’être là pour toi."
   },
   {
     day: 3,
