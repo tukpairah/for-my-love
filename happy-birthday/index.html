@@ -1,0 +1,213 @@
+<title>Joyeux anniversaire Irulan</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#261B2E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Lora:ital,wght@0,400;0,500;1,400&family=Pinyon+Script&display=swap" rel="stylesheet">
+<style>
+/* Concept: a blush paper card on a hazy rose-and-lavender field. It closes like a real card, opens on touch, and the letter lies below it on soft paper. */
+:root{
+  /* night is the default; the light palette is the switch */
+  --bg-a:#21161F; --bg-b:#261B2E; --bg-c:#1A1727; --paper:#2D2132; --petal:#E79DB3; --petal-op:.3;
+  --rose-deep:#F2A8BE; --ink:#F1E3EA; --hush:#BBA5B2; --line:rgba(242,168,190,.38); --line2:rgba(242,168,190,.4);
+  --shadow:rgba(0,0,0,.55); --hl:rgba(255,255,255,.07); --cover-a:#3C2740; --cover-b:#4A2E49; --cover-c:#38294D;
+  --display:"Pinyon Script","Snell Roundhand",cursive; --numeral:"Cormorant Garamond",Georgia,serif; --text:"Lora",Georgia,"Times New Roman",serif;
+  color-scheme:dark;
+}
+:root[data-theme="light"]{
+  --bg-a:#FBE3EA; --bg-b:#F6E6F0; --bg-c:#E9E2F5; --paper:#FFF8F9; --petal:#EBA9BC; --petal-op:.55;
+  --rose-deep:#A94C68; --ink:#5B4452; --hush:#8C7684; --line:rgba(235,169,188,.7); --line2:rgba(169,76,104,.35);
+  --shadow:rgba(169,76,104,.45); --hl:rgba(255,255,255,.75); --cover-a:#FDEFF3; --cover-b:#F8D7E2; --cover-c:#EFD3E8;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; padding-inline:16px; padding-block:68px 64px; min-height:100%;
+  background:var(--bg-b) linear-gradient(165deg,var(--bg-a) 0%,var(--bg-b) 45%,var(--bg-c) 100%) fixed;
+  color:var(--ink); font-family:var(--text); -webkit-font-smoothing:antialiased; overflow-x:hidden;
+}
+.petals{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.petals i{position:absolute;top:-6vh;width:var(--s);height:calc(var(--s)*1.35);background:var(--petal);opacity:var(--petal-op);border-radius:70% 0 70% 0;animation:fall var(--d) linear var(--dl) infinite}
+@keyframes fall{0%{transform:translate3d(0,0,0) rotate(0)}50%{transform:translate3d(var(--x),55vh,0) rotate(180deg)}100%{transform:translate3d(calc(var(--x)*-.6),112vh,0) rotate(360deg)}}
+main{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:32px;max-width:640px;margin-inline:auto}
+
+/* ---------- the card ---------- */
+.stage{width:100%;display:flex;flex-direction:column;align-items:center;gap:18px;perspective:1600px}
+.card{position:relative;width:min(100%,380px);aspect-ratio:3/4.1;border:0;padding:0;background:none;font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;border-radius:6px}
+.card:focus-visible{outline:3px solid var(--rose-deep);outline-offset:6px}
+.inside,.cover{position:absolute;inset:0;border-radius:6px}
+.inside{
+  background:var(--paper); box-shadow:0 22px 50px -18px var(--shadow),0 2px 0 var(--hl) inset;
+  display:flex;align-items:center;justify-content:center;padding:34px 30px;text-align:center;
+}
+.inside::before{content:"";position:absolute;inset:12px;border:1px solid var(--line);border-radius:3px;pointer-events:none}
+.inside p{margin:0;font-family:var(--text);font-weight:500;font-size:clamp(16px,4.4vw,19px);line-height:1.6;color:var(--rose-deep);text-wrap:balance}
+.cover{
+  transform-origin:left center; backface-visibility:hidden; -webkit-backface-visibility:hidden;
+  background:linear-gradient(150deg,var(--cover-a) 0%,var(--cover-b) 60%,var(--cover-c) 100%);
+  box-shadow:0 22px 50px -18px var(--shadow),0 0 0 1px var(--hl) inset;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:30px 24px;text-align:center;
+  transition:transform 1.15s cubic-bezier(.5,.05,.2,1),opacity .6s ease 1s;
+}
+.cover::before{content:"";position:absolute;inset:14px;border:1px solid var(--line2);border-radius:3px}
+.cover .twenty{font-family:var(--numeral);font-weight:600;font-size:clamp(104px,34vw,148px);line-height:.9;color:var(--rose-deep);letter-spacing:-2px}
+.cover .joyeux{font-family:var(--display);font-size:clamp(34px,10vw,44px);line-height:1.1;color:var(--ink);margin-top:6px}
+.cover .name{font-family:var(--display);font-size:clamp(46px,14vw,62px);line-height:1.05;color:var(--rose-deep)}
+.cover .heart{width:26px;height:24px;margin-top:14px;fill:var(--petal)}
+.card.open .cover{transform:rotateY(-172deg);opacity:0;pointer-events:none}
+.hint{font-family:var(--text);font-style:italic;font-size:15px;color:var(--hush);transition:opacity .4s}
+.hint.gone{opacity:0;visibility:hidden}
+
+/* ---------- the letter ---------- */
+.letter{
+  width:100%; background:var(--paper); border-radius:10px; padding:clamp(26px,6vw,52px) clamp(20px,6vw,56px);
+  box-shadow:0 26px 60px -26px var(--shadow),0 0 0 1px var(--line);
+  opacity:0; transform:translateY(22px); transition:opacity .9s ease,transform .9s ease;
+}
+.letter.show{opacity:1;transform:none}
+.letter p{margin:0 0 1.15em;font-size:clamp(17px,4.6vw,19px);line-height:1.78;text-wrap:pretty;hyphens:manual}
+.letter p.beat{font-style:italic;color:var(--rose-deep);font-size:clamp(18px,4.9vw,21px);text-align:center;margin-block:1.5em}
+.letter .sig{margin:2.2em 0 0;text-align:center;font-family:var(--display);font-size:clamp(28px,8vw,36px);line-height:1.35;color:var(--rose-deep);font-weight:400}
+.letter .sig strong{font-weight:400}
+.letter .rule{height:1px;margin:2em auto 0;width:64%;background:linear-gradient(90deg,transparent,var(--petal),transparent)}
+
+
+.mode{position:fixed;top:12px;right:12px;z-index:5;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--paper);color:var(--rose-deep);display:flex;align-items:center;justify-content:center;padding:0;cursor:pointer;box-shadow:0 8px 20px -10px var(--shadow);-webkit-tap-highlight-color:transparent}
+.mode:focus-visible{outline:3px solid var(--rose-deep);outline-offset:3px}
+.mode svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.mode .sun{display:none}
+.mode[data-state="dark"] .sun{display:block}
+.mode[data-state="dark"] .moon{display:none}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .petals{display:none}
+  .cover,.letter{transition:opacity .01s}
+  .card.open .cover{transform:none}
+}
+</style>
+
+<button class="mode" id="mode" type="button" aria-label="Thème sombre" title="Thème sombre / clair">
+  <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5z"/></svg>
+  <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+</button>
+<div class="petals" id="petals" aria-hidden="true"></div>
+<main>
+  <div class="stage">
+    <div class="card" id="card" role="button" tabindex="0" aria-expanded="false" aria-controls="letter" aria-label="Carte d'anniversaire pour Irulan, touche pour ouvrir">
+      <div class="inside"><p>À toi, Irulan, pour tes vingt ans. À la personne que le destin a placée sur mon chemin et que mon cœur a choisie. ❤️</p></div>
+      <div class="cover" aria-hidden="true">
+        <div class="twenty">20</div>
+        <div class="joyeux">Joyeux anniversaire</div>
+        <div class="name">Irulan !</div>
+        <svg class="heart" viewBox="0 0 24 22" aria-hidden="true"><path d="M12 21C5 15.4 1 11.7 1 7.2 1 4 3.4 1.5 6.5 1.5c2.2 0 4.2 1.2 5.5 3.2C13.3 2.7 15.3 1.5 17.5 1.5 20.6 1.5 23 4 23 7.2c0 4.5-4 8.2-11 13.8z"/></svg>
+      </div>
+    </div>
+    <div class="hint" id="hint">Touche la carte pour l'ouvrir</div>
+  </div>
+
+  <article class="letter" id="letter" hidden>
+<p class="beat">Жаным, joyeux vingtième anniversaire !</p>
+<p>Tu sais, autrefois, le 14 octobre n’était qu’une date ordinaire dans mon calendrier. Une journée parmi tant d’autres, qui passait sans laisser de trace particulière. Mais aujourd’hui, cette date a une tout autre signification pour moi. C’est l’un des jours les plus précieux de mon année, parce que c’est le jour où tu es née. Le jour où le monde a accueilli une personne qui, des années plus tard, allait prendre une place immense dans ma vie. Et quand j’y pense, je trouve cela absolument incroyable.</p>
+<p>Il y a encore un an, je n’aurais jamais pu imaginer que j’allais rencontrer ma moitié. Je ne savais même pas que la vie me réservait une histoire comme la nôtre. Si quelqu’un m’avait raconté ce qui allait m’arriver, j’aurais probablement eu du mal à le croire. Un garçon du Kazakhstan et une fille de France, deux personnes qui ne s’étaient jamais rencontrées, qui vivaient sur deux continents différents, avec des cultures, des langues et des habitudes différentes, allaient tous les deux partir en Malaisie dans le cadre d’un échange. Et aucun de nous ne savait ce qui l’attendait là-bas.</p>
+<p>Mais ce qui rend notre histoire encore plus incroyable, c’est qu’aucun de nous ne cherchait une relation à ce moment-là. Nous n’étions pas partis pour tomber amoureux. Nous étions simplement deux personnes qui vivaient leur vie, chacune de leur côté, sans savoir que quelques rencontres allaient tout changer. Et pourtant, parmi tant de personnes, parmi tant de possibilités, nos chemins se sont croisés.</p>
+<p>Parfois, je me demande combien de choses ont dû se produire pour que nous nous retrouvions au même endroit, au même moment. Combien de circonstances auraient pu être différentes. Et si l’un de nous avait pris une autre décision ? Si nous étions restés chacun dans notre coin ? Si je n’avais jamais osé venir te parler ?</p>
+<p>Peut-être que nous serions aujourd’hui deux inconnus, quelque part dans le monde, ignorant complètement l’existence de l’autre.</p>
+<p>Mais ce n’est pas ce qui s’est passé. Et je remercie sincèrement le destin pour cela.</p>
+<p>Je crois que je garderai toujours en mémoire le jour où j’ai pris mon courage à deux mains pour t’offrir ce Milo. Cela peut sembler être un petit geste, quelque chose de tout simple, mais pour moi, il représente bien plus que cela. C’était un risque que j’ai décidé de prendre, un pas vers toi alors que je ne savais pas du tout ce qui allait suivre. Aujourd’hui, quand je repense à ce moment, je suis tellement reconnaissant envers le garçon que j’étais ce jour-là. Reconnaissant d’avoir osé, d’avoir dépassé ma peur et de ne pas avoir laissé cette occasion m’échapper.</p>
+<p>Et tu sais pourquoi ce geste compte autant pour moi ? Parce que je sais d’où je viens.</p>
+<p>Quand j’étais plus jeune, à l’école, j’étais un garçon très timide, réservé, parfois même trop craintif. J’avais du mal à prendre des initiatives, je manquais de confiance en moi et je me laissais parfois aller à la facilité. J’étais trop doux avec certaines personnes, au point de ne pas toujours savoir défendre mes propres envies. Un jour, je me suis regardé honnêtement et j’ai compris que je ne voulais pas continuer à vivre de cette manière. Je me suis mis en colère contre moi-même, non pas parce que je me détestais, mais parce que je sentais que je pouvais devenir quelqu’un de différent. Quelqu’un de plus fort, de plus courageux, de plus déterminé.</p>
+<p>Alors, j’ai commencé à me reconstruire, petit à petit. J’ai appris à avancer seul, à travailler sur moi-même, à accepter les difficultés et à continuer même lorsque personne ne me regardait ou ne m’encourageait. Pendant des années, j’ai suivi mon chemin sans avoir près de moi le soutien et les amitiés dont j’aurais parfois eu besoin. Mais, au fond de moi, je gardais l’espoir qu’un jour, je rencontrerais des personnes avec lesquelles je pourrais être véritablement moi-même. Des personnes qui comprendraient ma façon de voir le monde, mes rêves et mes ambitions.</p>
+<p>Et pendant longtemps, je me suis demandé qui serait cette personne. Est-ce que je l’avais déjà croisée sans le savoir ? Est-ce qu’elle se trouvait quelque part près de moi ? À quoi ressemblerait-elle ? Est-ce qu’un jour, quelqu’un me comprendrait vraiment ?</p>
+<p class="beat">Je ne savais pas que cette personne serait toi.</p>
+<p>Je ne savais pas qu’après toutes ces années de travail sur moi-même, après toutes ces choses que j’avais traversées, j’allais prendre l’avion pour la Malaisie et y rencontrer une fille qui allait me regarder avec des yeux différents de ceux auxquels j’étais habitué. Une fille qui allait croire en moi, qui allait voir mes ambitions sans les trouver ridicules, qui allait écouter mes pensées et prendre mes sentiments au sérieux.</p>
+<p>Tu as vu en moi quelque chose que j’espérais moi-même voir devenir un jour une réalité. Tu as cru en ma capacité à construire quelque chose de beau, en ma volonté d'avancer et en mes rêves, même lorsque ceux-ci semblaient encore très lointains. Tu as accordé ta confiance à un simple Kazakh qui n’avait pas peur de rêver grand, et cette confiance a une valeur immense à mes yeux.</p>
+<p>Je ne veux pas que tu penses que tu es responsable de la personne que je deviens. Ce chemin m’appartient et je sais que je dois continuer à avancer par mes propres efforts. Mais tu m’as apporté quelque chose de précieux : le bonheur de pouvoir partager ce chemin avec quelqu’un qui croit en moi, qui me comprend et auprès de qui je peux aussi laisser tomber mes défenses.</p>
+<p>Avec toi, je ne ressens pas le besoin de prouver constamment ma valeur pour mériter d’être aimé. Je peux te parler de mes réussites, mais aussi de mes doutes. Je peux te raconter mes rêves les plus ambitieux, mais également les petites choses qui m’ont rendu heureux dans ma journée. Et je sais que tu ne regardes pas seulement ce que je fais ou ce que je pourrais devenir. Tu t’intéresses aussi à la personne que je suis aujourd’hui.</p>
+<p class="beat">C’est quelque chose que je ne prendrai jamais pour acquis.</p>
+<p class="beat">Irulan, je veux aussi te parler de la personne que tu es à mes yeux.</p>
+<p>Je pourrais te parler de ta beauté pendant des heures. Je pourrais te dire à quel point j’aime ton visage, ton sourire, tes yeux, tes cheveux châtains, ta voix et toutes ces petites choses qui font que je te reconnaîtrais parmi tant d’autres. Tu sais déjà que je peux parfois regarder une simple photo de toi et me mettre à sourire comme un idiot. Tu sais que je suis capable de parler de ta beauté à mes amis avec tellement de fierté qu’ils finissent par sourire en m’écoutant.</p>
+<p>Mais si je t’aime autant, ce n’est pas simplement parce que tu es belle.</p>
+<p>C’est parce qu’il y a en toi tout un monde que j’ai envie de découvrir pendant des années. Un monde fait de tes pensées, de tes émotions, de tes rêves, de tes souvenirs, de tes peurs, de tes petites habitudes et de tout ce que tu ne montres pas nécessairement à tout le monde. J’aime ta façon de réfléchir, ta sensibilité, ton intelligence, ta manière de prendre les choses à cœur et cette capacité que tu as à me faire sentir que mes paroles comptent pour toi.</p>
+<p>J’aime le fait que tu m’écoutes, que tu tiennes compte de ce qui est important pour moi et que tu exprimes ton amour à ta manière. J’aime la façon dont tu prends tes études au sérieux, dont tu avances vers tes objectifs et dont tu essaies de faire de ton mieux, même lorsque tu es fatiguée. J’admire la personne que tu es et celle que tu continues de devenir.</p>
+<p>Et surtout, j’aime ce que je découvre lorsque je regarde au-delà de tout ce qui se voit au premier abord.</p>
+<p>Je me souviens de nos premières conversations, de cette petite timidité entre nous, de ces moments où nous apprenions doucement à nous connaître sans savoir où tout cela nous mènerait. Nous étions encore deux personnes qui découvraient l’univers de l’autre, qui essayaient de comprendre ses habitudes, ses pensées et sa manière de voir la vie.</p>
+<p class="beat">Puis, petit à petit, quelque chose s’est construit.</p>
+<p>Nous avons commencé à nous faire confiance. Nous avons appris à partager davantage, à nous ouvrir l’un à l’autre et à laisser une place à l’autre dans nos journées. Un pont s’est construit entre nos deux mondes, et aujourd’hui, ce pont est devenu quelque chose de précieux pour moi.</p>
+<p>Ce qui me touche le plus, c’est que nous n’avons pas besoin d’être identiques pour nous comprendre. Nous n’avons pas grandi dans le même pays, nous ne parlons pas les mêmes langues maternelles et nous n’avons pas vécu les mêmes expériences. Pourtant, nous avons trouvé un moyen de nous rejoindre, de nous écouter et de nous aimer. Et je trouve cela beaucoup plus beau que si tout avait été facile dès le départ.</p>
+<p>Mon amour, je veux que tu saches quelque chose : tu n’as pas besoin d’être parfaite pour être précieuse à mes yeux.</p>
+<p>Tu n’as pas besoin de réussir chaque examen, de terminer chaque projet, d’être toujours forte ou de trouver les bons mots à chaque instant. Tu n’as pas besoin de cacher ta fatigue ou tes inquiétudes pour me faire plaisir. Tu as le droit d’avoir des journées difficiles, de douter, de te sentir perdue ou simplement de ne pas avoir l’énergie de parler.</p>
+<p>Je ne veux pas seulement être le garçon avec qui tu partages les beaux moments. Je veux aussi être celui auprès de qui tu peux souffler lorsque la vie devient trop lourde. Celui à qui tu peux dire que tu es fatiguée sans avoir peur de décevoir. Celui qui t’écoute sans chercher immédiatement à tout résoudre. Celui qui te rappelle ta valeur lorsque tu as du mal à la voir toi-même.</p>
+<p>Je ne pourrai pas toujours supprimer les difficultés de ta vie, et je ne veux pas te faire de promesses impossibles. Mais je peux te promettre de faire de mon mieux pour être un homme sur lequel tu pourras compter, quelqu’un qui prendra tes sentiments au sérieux et qui cherchera toujours à comprendre ce que tu traverses.</p>
+<p>Je veux que mon amour ne soit pas seulement quelque chose que tu lis dans mes messages. Je veux que tu puisses le reconnaître dans mes actes, dans ma patience, dans mon respect pour toi, dans ma façon de t’écouter et dans les efforts que je ferai pour construire notre avenir.</p>
+<p>Je veux que tu te sentes aimée, respectée et libre d'être toi-même avec moi.</p>
+<p>Et lorsque je pense à l'avenir, ce ne sont pas seulement les grandes choses qui me viennent à l'esprit.</p>
+<p>Bien sûr, je rêve de te retrouver en France, de pouvoir enfin te prendre dans mes bras sans avoir à penser au moment où nous devrons nous dire au revoir. Je rêve de voir ton visage autrement qu'à travers un écran, de te regarder lorsque tu me racontes ta journée et de pouvoir te tenir la main simplement parce que tu es là.</p>
+<p class="beat">Mais je rêve aussi de toutes les petites choses.</p>
+<p>Je rêve de me réveiller près de toi et de te souhaiter bonjour en t'embrassant le front. De préparer le petit-déjeuner ensemble, même si nous ne sommes pas d'accord sur la manière de faire certaines choses. De t'écouter me raconter un détail de ta journée que tu aurais peut-être oublié de raconter à quelqu'un d'autre. De te voir travailler à ton bureau pendant que je travaille au mien, puis de faire une pause pour venir te prendre dans mes bras.</p>
+<p>Je rêve de rentrer à la maison et de savoir que nous allons nous retrouver. De rire pour des raisons complètement stupides, de choisir ce que nous allons manger, de faire des courses ensemble et de nous raconter nos journées avant de nous endormir.</p>
+<p>Je rêve de ces moments qui, vus de l'extérieur, paraîtront ordinaires, mais qui auront une valeur immense pour moi parce que je les partagerai avec toi.</p>
+<p>Et oui, je rêve aussi de construire une famille avec toi. De voir nos parents heureux de nous voir avancer ensemble, de créer un foyer dans lequel nous nous sentirons tous les deux en sécurité et, si la vie nous en donne la chance, d'élever nos enfants avec amour, patience et de belles valeurs. J'aimerais que nous leur apprenions à être courageux sans devenir durs, à être ambitieux sans oublier l'essentiel et à aimer les autres sans perdre leur propre identité.</p>
+<p>Je ne sais pas exactement à quoi ressemblera notre avenir. Je sais qu'il y aura des défis, des décisions difficiles et des moments où nous devrons faire preuve de patience. Mais je sais que je veux faire ma part pour construire cet avenir avec toi, pas simplement en parler.</p>
+<p>Je veux qu'un jour, lorsque nous regarderons en arrière, nous puissions sourire en repensant à cette histoire qui a commencé si loin de chez nous. À ce garçon qui avait osé offrir un Milo à une fille qu'il connaissait à peine. À cette fille française qui avait accepté de découvrir son monde. À ces deux personnes qui ne savaient pas encore tout ce qui les attendait.</p>
+<p>Et je veux que nous puissions nous dire que tous ces efforts, toute cette patience et toute cette distance n'auront pas été vains.</p>
+<p>Je veux que, lorsque nous serons plus âgés, nous n'ayons pas de regrets concernant l'amour que nous aurons donné l'un à l'autre. Je veux que nous sachions que nous avons essayé, que nous avons appris, que nous avons grandi et que nous avons fait de notre mieux pour protéger ce qui comptait pour nous.</p>
+<p>Je ne te promets pas une vie sans problèmes. Je te promets quelque chose de plus réel : mon intention sincère de continuer à te choisir, de te respecter et de faire grandir notre relation avec toi.</p>
+<p>Parce que je ne veux pas simplement avoir une petite amie. Je veux construire une vie avec la personne que j'aime. Et pour moi, cette personne, c'est toi.</p>
+<p>Tu sais, mon amour, il y a une chose que j'aurais aimé pouvoir dire au petit garçon que j'étais autrefois. Je lui aurais dit qu'un jour, il rencontrerait une fille qui lui ferait comprendre que tous les efforts accomplis pour grandir avaient aussi une autre signification : ils l'avaient préparé à accueillir quelqu'un dans sa vie, à prendre soin d'une relation et à partager ses rêves avec une autre personne.</p>
+<p>Je lui aurais dit de continuer, même lorsqu'il se sentirait seul. De ne pas abandonner ses ambitions. De ne pas avoir honte de sa sensibilité. Et surtout, de ne pas renoncer à croire qu'il pourrait un jour rencontrer quelqu'un avec qui il se sentirait profondément heureux.</p>
+<p>Je ne sais pas si tout se passe exactement comme ce garçon l'avait imaginé, mais je sais qu'il n'aurait jamais pu prévoir que tu serais là.</p>
+<p>Et si je pouvais lui montrer une seule chose de ma vie actuelle, je ne choisirais ni mes études, ni mes projets, ni mes réussites. Je lui montrerais toi. Je lui montrerais ton visage, nos souvenirs, nos conversations et cette fille avec laquelle je rêve de partager tant de choses.</p>
+<p>Parce que parmi toutes les belles choses que je souhaite accomplir dans ma vie, il y en a une qui ne ressemble à aucune autre : continuer à écrire notre histoire avec toi.</p>
+<p>Alors aujourd'hui, pour tes vingt ans, je veux te souhaiter bien plus qu'une belle journée.</p>
+<p>Je te souhaite de conserver cette lumière qui fait de toi la personne que j'aime. De rencontrer des personnes qui sauront reconnaître ta valeur. De réussir dans ce qui te tient à cœur, de découvrir le monde, d'apprendre, de rire, de vivre des moments dont tu te souviendras longtemps et de ne jamais oublier que tu mérites d'être aimée avec sincérité.</p>
+<p>Je te souhaite de pouvoir être fière de toi, non seulement pour ce que tu accomplis, mais aussi pour la personne que tu es. J'espère que tu te donneras autant de douceur que tu en donnes aux autres, que tu sauras te reposer sans culpabiliser et que tu n'oublieras jamais de prendre soin de ton propre cœur.</p>
+<p>Et lorsque tu traverseras des périodes difficiles, j'espère que tu te souviendras qu'il existe quelque part un garçon du Kazakhstan qui croit profondément en toi, qui est fier de toi et qui rêve de te retrouver pour pouvoir te serrer contre lui.</p>
+<p>Un garçon qui n'aurait jamais imaginé que son voyage en Malaisie changerait autant sa vie.</p>
+<p>Un garçon qui, parmi toutes les choses que la vie lui a offertes, considère notre rencontre comme l'un de ses plus beaux cadeaux.</p>
+<p class="beat">Un garçon qui est reconnaissant de pouvoir t'appeler sa petite amie.</p>
+<p>Un garçon qui t'aime pour la personne que tu es aujourd'hui, qui respecte la femme que tu deviens et qui espère avoir la chance de marcher à tes côtés pendant de très longues années.</p>
+<p class="beat">Irulan, joyeux anniversaire, mon amour.</p>
+<p>Merci d'être née. Merci d'avoir été cette fille que j'ai rencontrée en Malaisie. Merci de m'avoir laissé une place dans ta vie, de m'avoir fait confiance et de partager avec moi une histoire qui est devenue si précieuse à mes yeux.</p>
+<p>Je ne sais pas si le destin avait réellement prévu notre rencontre. Mais je sais ce que j'ai décidé d'en faire : je veux continuer à prendre soin de ce que nous avons construit, à apprendre à mieux t'aimer et à faire de mon mieux pour que les paroles que je t'écris aujourd'hui deviennent un jour des souvenirs que nous vivrons ensemble.</p>
+<p>Et maintenant, j'ai un petit secret à te révéler : ton cadeau d'anniversaire est déjà arrivé à Paris et il t'attend ! ❤️</p>
+<p>Ce long message d'anniversaire est divisé en sept parties, et l'une d'entre elles te donnera le chemin pour trouver mon cadeau. Tu devras retrouver les autres pièces du puzzle : certaines te seront envoyées directement, tandis que d'autres t'attendent sur la plateforme. J'espère que tu prendras plaisir à découvrir chaque partie, car j'y ai mis beaucoup de temps, d'attention et d'amour.</p>
+<p>Je voulais que ton vingtième anniversaire soit accompagné de quelque chose qui te ressemble à mes yeux : quelque chose de personnel, de sincère et rempli de petites attentions. Quelque chose qui te rappelle que, même à des milliers de kilomètres, tu occupes une place immense dans mon cœur.</p>
+<p>J'aimerais pouvoir être près de toi aujourd'hui, te regarder sourire en découvrant ton cadeau, te serrer dans mes bras et te souhaiter ton anniversaire en personne. J'aimerais pouvoir embrasser ton front et te dire tout cela sans avoir besoin d'un écran entre nous.</p>
+<p>Mais jusqu'au jour où je pourrai le faire, je continuerai à trouver des façons de te montrer mon amour, même à distance.</p>
+<p>Joyeux anniversaire, ma chérie. Profite de tes vingt ans, prends soin de toi et n'oublie jamais à quel point tu es précieuse.</p>
+<p>Je t'aime, Irulan. Et je suis tellement heureux que nos chemins se soient croisés.</p>
+    <div class="rule"></div>
+    <p class="sig">Avec tout mon amour,<br>Ton Rahat, ton copain venu d'Asie. ❤️</p>
+  </article>
+</main>
+
+<script>
+(function(){
+  var card=document.getElementById('card'), letter=document.getElementById('letter'), hint=document.getElementById('hint');
+  var calm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // a few drifting petals
+  var host=document.getElementById('petals');
+  if(!calm){for(var i=0;i<16;i++){var p=document.createElement('i');
+    p.style.cssText='left:'+(Math.random()*100)+'%;--s:'+(9+Math.random()*10)+'px;--d:'+(16+Math.random()*16)+'s;--dl:-'+(Math.random()*26)+'s;--x:'+((Math.random()-.5)*160)+'px';
+    host.appendChild(p);}}
+  // night by default; the sun button switches to the light palette (remembered when the browser allows it)
+  var root=document.documentElement, mode=document.getElementById('mode');
+  try{var saved=localStorage.getItem('irulan-theme'); if(saved==='dark'||saved==='light') root.setAttribute('data-theme',saved);}catch(e){}
+  function effective(){return root.getAttribute('data-theme')==='light'?'light':'dark';}
+  function sync(){var d=effective()==='dark'; mode.setAttribute('data-state',d?'dark':'light'); mode.setAttribute('aria-label',d?'Thème clair':'Thème sombre'); mode.setAttribute('aria-pressed',d?'true':'false');}
+  mode.addEventListener('click',function(){var next=effective()==='dark'?'light':'dark'; root.setAttribute('data-theme',next); try{localStorage.setItem('irulan-theme',next);}catch(e){} sync();});
+  sync();
+  var opened=false;
+  function openCard(){
+    if(opened) return; opened=true;
+    card.classList.add('open'); card.setAttribute('aria-expanded','true'); card.setAttribute('aria-label','Carte ouverte');
+    hint.classList.add('gone'); letter.hidden=false;
+    requestAnimationFrame(function(){requestAnimationFrame(function(){letter.classList.add('show');});});
+    setTimeout(function(){ try{letter.scrollIntoView({behavior:calm?'auto':'smooth',block:'start'});}catch(e){} }, calm?0:1300);
+  }
+  card.addEventListener('click',openCard);
+  card.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();openCard();}});
+})();
+</script>
